@@ -1,5 +1,6 @@
-// Gemini provider. Model listing (T-23); the generate call is added in T-39.
-import { fetchJson } from '../errors.js';
+// Gemini provider. Model listing (T-23), image transcription (T-34); the plan call is added in T-39.
+import { GoogleGenAI } from '@google/genai';
+import { AiError, errorFromStatus, fetchJson, networkError } from '../errors.js';
 
 const NAME = 'Gemini';
 const MODELS_URL = 'https://generativelanguage.googleapis.com/v1beta/models';
@@ -46,4 +47,44 @@ export async function listGeminiModels(key) {
 export function defaultGeminiModel(models) {
   const flash = models.filter((id) => id.includes('flash'));
   return flash.find((id) => !NOT_DEFAULT.test(id)) ?? flash[0] ?? models[0] ?? '';
+}
+
+// The SDK throws ApiError (with an HTTP status) for service errors, and plain errors when offline.
+function toAiError(error) {
+  if (error instanceof AiError) return error;
+  if (Number.isInteger(error?.status)) return errorFromStatus(error.status, NAME);
+  return networkError(NAME);
+}
+
+/**
+ * One generateContent call; returns the reply text.
+ * @param {{ key: string, model: string, contents: object[], config?: object }} request
+ * @returns {Promise<string>}
+ * @throws {AiError}
+ */
+async function generateText({ key, model, contents, config }) {
+  try {
+    const ai = new GoogleGenAI({ apiKey: key });
+    const response = await ai.models.generateContent({ model, contents, config });
+    const text = response.text ?? '';
+    if (!text.trim()) throw new AiError('BAD_OUTPUT', `${NAME} sent back an empty answer. Try again.`, { provider: NAME });
+    return text;
+  } catch (error) {
+    throw toAiError(error);
+  }
+}
+
+/**
+ * Read an image and return its text, e.g. a timetable photo.
+ * @param {{ key: string, model: string, mimeType: string, base64: string, prompt: string }} request
+ * @returns {Promise<string>}
+ * @throws {AiError}
+ */
+export async function transcribeImageGemini({ key, model, mimeType, base64, prompt }) {
+  const text = await generateText({
+    key,
+    model,
+    contents: [{ role: 'user', parts: [{ inlineData: { mimeType, data: base64 } }, { text: prompt }] }],
+  });
+  return text.trim();
 }

@@ -197,7 +197,7 @@
   Show a progress bar ("Reading page 120 of 380").
   *Done when:* uploading the textbook creates one `pages` row per page.
 
-- [ ] **T-34 Image sources**
+- [x] **T-34 Image sources**
   For JPG/PNG (e.g. timetable photo), send the image once to Gemini and ask for a clean
   text transcription; store it as one page.
   *Done when:* the timetable image becomes readable text in the database.
