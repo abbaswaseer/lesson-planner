@@ -125,7 +125,7 @@
   Textarea for the notification header line with placeholders `{subject}`, `{from}`, `{till}`.
   *Done when:* persists.
 
-- [ ] **T-22 API keys section**
+- [x] **T-22 API keys section**
   Password inputs for Gemini (required), Groq and OpenRouter (optional), with show/hide
   toggles and the note "Your key is stored only on this computer." Link to aistudio.google.com.
   *Done when:* keys persist and are hidden by default.

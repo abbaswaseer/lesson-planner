@@ -11,6 +11,7 @@ import TimetableGrid from './setup/TimetableGrid.jsx';
 import WeekTable from './setup/WeekTable.jsx';
 import TeachingStyle from './setup/TeachingStyle.jsx';
 import NotificationTemplate from './setup/NotificationTemplate.jsx';
+import ApiKeys from './setup/ApiKeys.jsx';
 
 /**
  * Setup page: the active profile's settings, one card per section. Every card saves itself.
@@ -46,6 +47,8 @@ export default function SetupPage() {
       {profile && (
         <>
           <BasicDetails key={`basic-${profile.id}`} profile={profile} />
+          {/* Near the top: nothing can be generated without a key. */}
+          <ApiKeys key={`keys-${profile.id}`} profile={profile} />
           <ClassesEditor key={`classes-${profile.id}`} profile={profile} />
           <PeriodSettings key={`periods-${profile.id}`} profile={profile} />
           <TimetableGrid key={`timetable-${profile.id}`} profile={profile} />
