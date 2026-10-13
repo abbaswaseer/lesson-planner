@@ -1,5 +1,6 @@
-// Groq provider. Model listing (T-23); the generate call is added in T-40.
+// Groq provider (OpenAI-compatible): model listing and JSON generation.
 import { fetchJson } from '../errors.js';
+import { callChatJson } from './openaiCompatible.js';
 
 const NAME = 'Groq';
 const MODELS_URL = 'https://api.groq.com/openai/v1/models';
@@ -21,4 +22,14 @@ export async function listGroqModels(key) {
     .map((model) => String(model.id ?? ''))
     .filter((id) => id && !NOT_FOR_TEXT.test(id))
     .sort();
+}
+
+/**
+ * Ask Groq for JSON; the schema is described in the prompt (JSON mode has no schema option).
+ * @param {{ key: string, model: string, system: string, user: string, schema?: object }} request
+ * @returns {Promise<any>}
+ * @throws {import('../errors.js').AiError}
+ */
+export function callGroq(request) {
+  return callChatJson({ ...request, url: 'https://api.groq.com/openai/v1/chat/completions', providerName: NAME });
 }

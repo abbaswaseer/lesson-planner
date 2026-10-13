@@ -14,3 +14,12 @@ export function imageTranscriptionPrompt(sourceType) {
     'Do not add comments, explanations or anything that is not in the image. Write "[unclear]" for text you cannot read.',
   ].join('\n');
 }
+
+/**
+ * For providers without a schema option (Groq, OpenRouter), the schema is described in the prompt.
+ * @param {object} schema
+ * @returns {string}
+ */
+export function schemaInstruction(schema) {
+  return `Return only one JSON object, with no other text, that matches this JSON schema:\n${JSON.stringify(schema)}`;
+}
