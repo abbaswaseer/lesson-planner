@@ -10,6 +10,7 @@ import PeriodSettings from './setup/PeriodSettings.jsx';
 import TimetableGrid from './setup/TimetableGrid.jsx';
 import WeekTable from './setup/WeekTable.jsx';
 import TeachingStyle from './setup/TeachingStyle.jsx';
+import NotificationTemplate from './setup/NotificationTemplate.jsx';
 
 /**
  * Setup page: the active profile's settings, one card per section. Every card saves itself.
@@ -50,6 +51,7 @@ export default function SetupPage() {
           <TimetableGrid key={`timetable-${profile.id}`} profile={profile} />
           <WeekTable key={`weeks-${profile.id}`} profile={profile} />
           <TeachingStyle key={`style-${profile.id}`} profile={profile} />
+          <NotificationTemplate key={`notification-${profile.id}`} profile={profile} />
         </>
       )}
 

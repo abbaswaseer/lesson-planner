@@ -121,7 +121,7 @@
   Textarea for activity style; editable list of assessment methods.
   *Done when:* both persist.
 
-- [ ] **T-21 Notification template**
+- [x] **T-21 Notification template**
   Textarea for the notification header line with placeholders `{subject}`, `{from}`, `{till}`.
   *Done when:* persists.
 
