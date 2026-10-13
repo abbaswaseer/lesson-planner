@@ -5,9 +5,10 @@ import { typesForKind } from '../../lib/sourceTypes.js';
  * Files chosen but not saved yet. The teacher checks each file's type, then saves it.
  * @param {{ items: Array<{ id: string, file: File, kind: string, type: string }>,
  *   onTypeChange: (id: string, type: string) => void, onRemove: (id: string) => void,
- *   onSave?: (id: string) => void, busyId?: string | null, progress?: string }} props
+ *   onSave?: (id: string) => void, busyId?: string | null,
+ *   progress?: { message: string, fraction: number } | null }} props
  */
-export default function PendingList({ items, onTypeChange, onRemove, onSave, busyId = null, progress = '' }) {
+export default function PendingList({ items, onTypeChange, onRemove, onSave, busyId = null, progress = null }) {
   if (items.length === 0) return null;
   return (
     <ul className="divide-y divide-gray-100 rounded-lg border border-gray-200 bg-white">
@@ -18,8 +19,16 @@ export default function PendingList({ items, onTypeChange, onRemove, onSave, bus
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm font-medium text-gray-900">{item.file.name}</p>
               <p className="text-xs text-gray-500">
-                {busy && progress ? progress : `${(item.file.size / 1024 / 1024).toFixed(1)} MB`}
+                {busy && progress ? progress.message : `${(item.file.size / 1024 / 1024).toFixed(1)} MB`}
               </p>
+              {busy && progress && (
+                <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-gray-100">
+                  <div
+                    className="h-full rounded-full bg-blue-600 transition-[width]"
+                    style={{ width: `${Math.round(progress.fraction * 100)}%` }}
+                  />
+                </div>
+              )}
             </div>
             <label className="sr-only" htmlFor={`type-${item.id}`}>
               Source type for {item.file.name}

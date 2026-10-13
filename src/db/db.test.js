@@ -7,6 +7,9 @@ import {
   updateProfile,
   deleteProfile,
   listProfiles,
+  addSource,
+  deleteSource,
+  listSources,
 } from './db.js';
 
 beforeEach(async () => {
@@ -65,5 +68,27 @@ describe('profile helpers', () => {
       expect(await table.where('profileId').equals(keep).count()).toBe(1);
     }
     expect(await getProfile(keep)).toBeDefined();
+  });
+});
+
+describe('source helpers', () => {
+  it('saves a source with its pages, lists newest first, and deletes both', async () => {
+    const profileId = await createProfile({ name: 'P' });
+    const bookId = await addSource(profileId, { type: 'textbook', name: 'Book.pdf' }, [
+      { pageNo: 1, text: 'one' },
+      { pageNo: 2, text: 'two' },
+    ]);
+    await new Promise((resolve) => setTimeout(resolve, 5)); // distinct addedAt
+    const sowId = await addSource(profileId, { type: 'sow', name: 'SOW.pdf' }, [{ pageNo: 1, text: 'sow' }]);
+
+    expect((await listSources(profileId)).map((s) => s.id)).toEqual([sowId, bookId]);
+    expect(await db.sources.get(bookId)).toMatchObject({ profileId, type: 'textbook', pageCount: 2 });
+    const pages = await db.pages.where('sourceId').equals(bookId).sortBy('pageNo');
+    expect(pages.map((p) => [p.profileId, p.pageNo, p.text])).toEqual([[profileId, 1, 'one'], [profileId, 2, 'two']]);
+
+    await deleteSource(bookId);
+    expect(await db.sources.get(bookId)).toBeUndefined();
+    expect(await db.pages.where('sourceId').equals(bookId).count()).toBe(0);
+    expect(await db.pages.where('sourceId').equals(sowId).count()).toBe(1);
   });
 });

@@ -192,7 +192,7 @@
   Choose the source type from a dropdown before saving.
   *Done when:* files appear in a pending list with their type.
 
-- [ ] **T-33 PDF to pages** (`lib/pdf.js`)
+- [x] **T-33 PDF to pages** (`lib/pdf.js`)
   Extract text page by page with pdfjs-dist (worker set up correctly for Vite).
   Show a progress bar ("Reading page 120 of 380").
   *Done when:* uploading the textbook creates one `pages` row per page.

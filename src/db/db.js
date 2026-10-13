@@ -75,4 +75,46 @@ export function listProfiles() {
   return db.profiles.orderBy('name').toArray();
 }
 
+// ---------------------------------------------------------------------------
+// Source helpers
+// ---------------------------------------------------------------------------
+
+/**
+ * Save a source and its pages together: all or nothing, so a failed upload
+ * never leaves a source without its text.
+ * @param {number} profileId
+ * @param {{ type: string, name: string, file?: Blob }} source `file` is kept only for the Word template.
+ * @param {Array<{ pageNo: number, text: string }>} pages
+ * @returns {Promise<number>} The new source's id.
+ */
+export function addSource(profileId, source, pages = []) {
+  return db.transaction('rw', [db.sources, db.pages], async () => {
+    const sourceId = await db.sources.add({ ...source, profileId, pageCount: pages.length, addedAt: Date.now() });
+    await db.pages.bulkAdd(pages.map((page) => ({ profileId, sourceId, pageNo: page.pageNo, text: page.text })));
+    return sourceId;
+  });
+}
+
+/**
+ * Delete a source and all of its pages.
+ * @param {number} sourceId
+ * @returns {Promise<void>}
+ */
+export function deleteSource(sourceId) {
+  return db.transaction('rw', [db.sources, db.pages], async () => {
+    await db.pages.where('sourceId').equals(sourceId).delete();
+    await db.sources.delete(sourceId);
+  });
+}
+
+/**
+ * A profile's sources, newest first.
+ * @param {number} profileId
+ * @returns {Promise<object[]>}
+ */
+export async function listSources(profileId) {
+  const sources = await db.sources.where('profileId').equals(profileId).sortBy('addedAt');
+  return sources.reverse();
+}
+
 export default db;

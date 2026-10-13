@@ -3,7 +3,8 @@ import { nanoid } from 'nanoid';
 import Card from '../components/Card.jsx';
 import { useToast } from '../components/Toast.jsx';
 import { useActiveProfile } from '../db/activeProfile.js';
-import { fileKind, guessType } from '../lib/sourceTypes.js';
+import { importSource } from '../lib/sourceImport.js';
+import { fileKind, guessType, sourceTypeLabel } from '../lib/sourceTypes.js';
 import PendingList from './sources/PendingList.jsx';
 import UploadArea from './sources/UploadArea.jsx';
 
@@ -14,6 +15,8 @@ export default function SourcesPage() {
   const profile = useActiveProfile();
   const toast = useToast();
   const [pending, setPending] = useState([]);
+  const [busyId, setBusyId] = useState(null);
+  const [progress, setProgress] = useState(null);
 
   const addFiles = (files) => {
     const usable = files.filter((file) => fileKind(file));
@@ -32,6 +35,23 @@ export default function SourcesPage() {
     setPending((list) => list.map((item) => (item.id === id ? { ...item, type } : item)));
   const remove = (id) => setPending((list) => list.filter((item) => item.id !== id));
 
+  const save = async (id) => {
+    const item = pending.find((entry) => entry.id === id);
+    setBusyId(id);
+    setProgress(null);
+    try {
+      const { pageCount } = await importSource(profile, item, (message, fraction) => setProgress({ message, fraction }));
+      remove(id);
+      const pagesText = item.kind === 'pdf' ? ` (${pageCount} pages)` : '';
+      toast.success(`Saved "${item.file.name}" as ${sourceTypeLabel(item.type)}${pagesText}.`);
+    } catch (error) {
+      toast.error(error?.friendly ? error.message : 'Could not save this file. Please try again.');
+    } finally {
+      setBusyId(null);
+      setProgress(null);
+    }
+  };
+
   if (profile === undefined) return null;
 
   return (
@@ -42,11 +62,18 @@ export default function SourcesPage() {
       ) : (
         <Card title="Add sources">
           <div className="space-y-4">
-            <UploadArea onFiles={addFiles} />
+            <UploadArea onFiles={addFiles} disabled={busyId !== null} />
             {pending.length > 0 && (
               <p className="text-sm text-gray-600">Check the type of each file, then save it.</p>
             )}
-            <PendingList items={pending} onTypeChange={changeType} onRemove={remove} />
+            <PendingList
+              items={pending}
+              onTypeChange={changeType}
+              onRemove={remove}
+              onSave={save}
+              busyId={busyId}
+              progress={progress}
+            />
           </div>
         </Card>
       )}
