@@ -21,7 +21,7 @@
   Install and configure Tailwind. Add base styles in `src/index.css`.
   *Done when:* a test heading styled with Tailwind classes shows blue and bold.
 
-- [ ] **T-03 Install core libraries**
+- [x] **T-03 Install core libraries**
   Install with pinned versions: react-router-dom, dexie, dexie-react-hooks, pdfjs-dist,
   minisearch, @google/genai, docx, file-saver, nanoid. Install vitest as a dev dependency
   and add `"test": "vitest run"` to package.json.
