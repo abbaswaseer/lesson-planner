@@ -1,7 +1,16 @@
+import Sidebar from './components/Sidebar.jsx';
+
 /**
- * Root component. Layout and routes come in T-05 / T-06.
+ * Root layout: navigation on the left (top on phones), page content on the right.
+ * Routes are added in T-06.
  */
 export default function App() {
-  // Temporary check that Tailwind works (T-02); replaced by the layout in T-05.
-  return <h1 className="p-8 text-3xl font-bold text-blue-600">Lesson Planner</h1>;
+  return (
+    <div className="min-h-screen md:flex">
+      <Sidebar />
+      <main className="flex-1 px-4 py-6 md:px-10 md:py-10">
+        <p className="text-gray-500">Choose a page from the menu.</p>
+      </main>
+    </div>
+  );
 }

@@ -35,7 +35,7 @@
 
 ## Phase 1 — Layout and navigation
 
-- [ ] **T-05 App layout**
+- [x] **T-05 App layout**
   Build `App.jsx` with a left sidebar and a main content area. Sidebar links: Setup,
   Sources, Generate, History, Help. App name at the top.
   *Done when:* layout shows on desktop; sidebar collapses to a top menu on phones.
