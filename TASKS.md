@@ -178,7 +178,7 @@
   *Done when:* tests pass using the example plan (valid) and 8 broken versions (each fails
   with the right message).
 
-- [ ] **T-31 Merge helper**
+- [x] **T-31 Merge helper**
   `mergePlan(lesson, profile, aiFields)` → final plan object with fields in the exact order
   of CLAUDE.md Section 6.
   *Done when:* test output matches the example plan's key order exactly.
