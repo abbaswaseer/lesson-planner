@@ -263,7 +263,7 @@
 
 ## Phase 7 — Generate page
 
-- [ ] **T-46 Request form**
+- [x] **T-46 Request form**
   Textarea for the request, optional "Notes for the AI" textarea, output type dropdown,
   Generate button. First-time checklist (key, sources, timetable) when anything is missing.
   *Done when:* the form shows; Generate is disabled until requirements are met.
