@@ -333,7 +333,7 @@
   (no full plans) with one AI call.
   *Done when:* output matches the format in CLAUDE.md Section 10 exactly; has a Copy button.
 
-- [ ] **T-59 Word output** (`outputs/docxPlan.js`)
+- [x] **T-59 Word output** (`outputs/docxPlan.js`)
   Create a .docx with one lesson per page following CLAUDE.md Section 10, using the docx library.
   *Done when:* the downloaded file opens in Word and looks like the school layout.
 

@@ -5,15 +5,18 @@ import { downloadText } from '../../lib/download.js';
 import { planHeader } from '../../lib/planFiles.js';
 import { getOutput } from '../../outputs/index.js';
 import RegenerateButton from './RegenerateButton.jsx';
+import WordDownloadButton from './WordDownloadButton.jsx';
 
 /**
  * The plans made for this request: Copy all / Download all, then one card per lesson.
- * @param {{ results: object[], onRegenerate: (key: string, instruction: string) => void,
+ * @param {{ results: object[], profile: object, onRegenerate: (key: string, instruction: string) => void,
  *   regeneratingKey: string | null, running: boolean }} props
  */
-export default function Results({ results, onRegenerate, regeneratingKey, running }) {
+export default function Results({ results, profile, onRegenerate, regeneratingKey, running }) {
   if (results.length === 0) return null;
-  const output = () => getOutput('beamsJson').render(results.map((result) => result.plan));
+  const plans = results.map((result) => result.plan);
+  const output = () => getOutput('beamsJson').render(plans);
+  const wantsWord = results[0].outputType === 'docxPlan';
 
   return (
     <section className="space-y-4">
@@ -21,6 +24,7 @@ export default function Results({ results, onRegenerate, regeneratingKey, runnin
         <h2 className="flex-1 text-lg font-semibold text-gray-900">
           {results.length} plan{results.length > 1 ? 's' : ''}
         </h2>
+        {wantsWord && !running && <WordDownloadButton plans={plans} profile={profile} />}
         {results.length > 1 && (
           <>
             <CopyButton text={() => output().all} label="Copy all" />

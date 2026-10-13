@@ -1,12 +1,10 @@
 // Registry of output types (CLAUDE.md Section 10). Adding a type = one new file + one line here.
 import beamsJson from './beamsJson.js';
+import docxPlan from './docxPlan.js';
+import notification from './notification.js';
 
 /** Output types the teacher can choose on Generate, in menu order. */
-export const OUTPUT_TYPES = [
-  beamsJson,
-  { id: 'notification', name: 'Weekly topic notification' },
-  { id: 'docxPlan', name: 'Word lesson plan' },
-];
+export const OUTPUT_TYPES = [beamsJson, notification, docxPlan];
 
 /**
  * @param {string} id

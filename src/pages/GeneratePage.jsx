@@ -72,6 +72,7 @@ export default function GeneratePage() {
       <NotificationCard text={generation.notice} />
       <Results
         results={generation.results}
+        profile={profile}
         onRegenerate={generation.regenerate}
         regeneratingKey={generation.regeneratingKey}
         running={generation.running}
