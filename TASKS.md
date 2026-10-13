@@ -153,7 +153,7 @@
   `dayName(dayId)`, `formatLongDate("12/10/2026")` → "12th October 2026".
   *Done when:* Vitest tests pass, including 1st/2nd/3rd/11th/21st/22nd suffixes.
 
-- [ ] **T-26 Duration helper** (`lib/timetable.js`)
+- [x] **T-26 Duration helper** (`lib/timetable.js`)
   `lessonDuration(profile, entry)` = periods × minutes for that day (with overrides).
   *Done when:* tests pass: Monday O1 = 80, Wednesday O3 = 40, Friday O1 = 60.
 

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { SAMPLE_PROFILE } from '../db/sampleProfile.js';
-import { gridFromTimetable, timetableFromGrid } from './timetable.js';
+import { gridFromTimetable, lessonDuration, periodMinutesForDay, timetableFromGrid } from './timetable.js';
 
 describe('gridFromTimetable', () => {
   it('puts each class in its periods', () => {
@@ -47,5 +47,34 @@ describe('timetableFromGrid', () => {
       { day: 1, classLabel: 'O3', periods: [4] },
       { day: 5, classLabel: 'O2', periods: [8] },
     ]);
+  });
+});
+
+describe('lessonDuration', () => {
+  const entry = (day, classLabel) =>
+    SAMPLE_PROFILE.timetable.find((e) => e.day === day && e.classLabel === classLabel);
+
+  it('Monday O1 (2 × 40) = 80', () => {
+    expect(lessonDuration(SAMPLE_PROFILE, entry(1, 'O1'))).toBe(80);
+  });
+
+  it('Wednesday O3 (1 × 40) = 40', () => {
+    expect(lessonDuration(SAMPLE_PROFILE, entry(3, 'O3'))).toBe(40);
+  });
+
+  it('Friday O1 uses the 30-minute override (2 × 30) = 60', () => {
+    expect(lessonDuration(SAMPLE_PROFILE, entry(5, 'O1'))).toBe(60);
+  });
+
+  it('returns null when no period length is set', () => {
+    expect(lessonDuration({}, { day: 1, periods: [1, 2] })).toBeNull();
+  });
+});
+
+describe('periodMinutesForDay', () => {
+  it('uses the override only on that day', () => {
+    expect(periodMinutesForDay(SAMPLE_PROFILE, 5)).toBe(30);
+    expect(periodMinutesForDay(SAMPLE_PROFILE, '5')).toBe(30);
+    expect(periodMinutesForDay(SAMPLE_PROFILE, 4)).toBe(40);
   });
 });

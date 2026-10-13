@@ -1,4 +1,4 @@
-// Timetable helpers. Request → list of lessons is added in T-26 to T-29.
+// Timetable helpers: grid ↔ saved timetable, lesson durations. Request → lessons comes in T-27 to T-29.
 
 /**
  * Saved timetable → grid lookup: grid[day][period] = class label.
@@ -43,4 +43,27 @@ export function timetableFromGrid(grid) {
     }
   }
   return timetable;
+}
+
+/**
+ * Period length on a given day: that day's override if set, else the usual length.
+ * @param {object} profile
+ * @param {number | string} day 1 = Monday … 5 = Friday.
+ * @returns {number | null} Minutes, or null if no valid length is set.
+ */
+export function periodMinutesForDay(profile, day) {
+  const minutes = profile?.dayOverrides?.[day]?.periodMinutes ?? profile?.periodMinutes;
+  return Number.isInteger(minutes) && minutes > 0 ? minutes : null;
+}
+
+/**
+ * Lesson duration in minutes = number of periods × period length for that day
+ * (CLAUDE.md Section 5). Worked out in code, never by the AI.
+ * @param {object} profile
+ * @param {{ day: number, periods: number[] }} entry One timetable entry.
+ * @returns {number | null} null if the period length is not set.
+ */
+export function lessonDuration(profile, entry) {
+  const minutes = periodMinutesForDay(profile, entry.day);
+  return minutes === null ? null : entry.periods.length * minutes;
 }
