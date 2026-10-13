@@ -215,7 +215,7 @@
   pageNo). Rebuild when sources change. `searchPages(query, { type, limit })`.
   *Done when:* searching "ASCII" returns the character-sets pages first.
 
-- [ ] **T-38 Search test box**
+- [x] **T-38 Search test box**
   On Sources: a search box showing top results with page number and a text preview.
   *Done when:* you can quickly check that a topic is found in the book.
 

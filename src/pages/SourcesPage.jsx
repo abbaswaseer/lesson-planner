@@ -6,6 +6,7 @@ import { useActiveProfile } from '../db/activeProfile.js';
 import { importSource } from '../lib/sourceImport.js';
 import { fileKind, guessType, sourceTypeLabel } from '../lib/sourceTypes.js';
 import PendingList from './sources/PendingList.jsx';
+import SearchBox from './sources/SearchBox.jsx';
 import SourcesList from './sources/SourcesList.jsx';
 import UploadArea from './sources/UploadArea.jsx';
 
@@ -80,6 +81,12 @@ export default function SourcesPage() {
           </Card>
           <Card title="Your sources">
             <SourcesList profileId={profile.id} />
+          </Card>
+          <Card title="Check a topic is found">
+            <p className="mb-3 text-sm text-gray-600">
+              Type a topic to see which pages the planner would read for it.
+            </p>
+            <SearchBox profileId={profile.id} />
           </Card>
         </>
       )}

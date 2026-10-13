@@ -1,5 +1,4 @@
 // Gemini provider. Model listing (T-23), image transcription (T-34); the plan call is added in T-39.
-import { GoogleGenAI } from '@google/genai';
 import { AiError, errorFromStatus, fetchJson, networkError } from '../errors.js';
 
 const NAME = 'Gemini';
@@ -64,6 +63,8 @@ function toAiError(error) {
  */
 async function generateText({ key, model, contents, config }) {
   try {
+    // Loaded on first use: the SDK is large and is only needed when generating.
+    const { GoogleGenAI } = await import('@google/genai');
     const ai = new GoogleGenAI({ apiKey: key });
     const response = await ai.models.generateContent({ model, contents, config });
     const text = response.text ?? '';
