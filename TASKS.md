@@ -67,7 +67,7 @@
   (also deletes its sources, pages, plans, progress), `listProfiles`.
   *Done when:* unit tests (with fake-indexeddb) pass.
 
-- [ ] **T-11 Active profile**
+- [x] **T-11 Active profile**
   Store the active profile id in localStorage. Add `useActiveProfile()` hook returning
   the live profile object (Dexie live query).
   *Done when:* reloading the page keeps the same active profile.

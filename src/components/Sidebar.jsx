@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { useActiveProfile } from '../db/activeProfile.js';
 
 // Menu order. Paths must match the routes in App.jsx.
 export const NAV_LINKS = [
@@ -20,11 +21,18 @@ const LINK_IDLE = 'text-gray-700 hover:bg-blue-50 hover:text-blue-700';
  */
 export default function Sidebar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const profile = useActiveProfile();
 
   return (
     <aside className="border-b border-gray-200 bg-gray-50 md:sticky md:top-0 md:h-screen md:w-56 md:shrink-0 md:border-b-0 md:border-r">
       <div className="flex items-center justify-between px-4 py-4 md:block md:px-5 md:py-6">
-        <span className="text-lg font-bold text-blue-600">Lesson Planner</span>
+        <div>
+          <span className="text-lg font-bold text-blue-600">Lesson Planner</span>
+          {/* Placeholder until the profile switcher arrives in T-12. */}
+          <p className="mt-1 truncate text-xs text-gray-500">
+            {profile === undefined ? 'Loading…' : profile ? `Profile: ${profile.name}` : 'No profile yet'}
+          </p>
+        </div>
         <button
           type="button"
           className="rounded-md px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-200 md:hidden"
