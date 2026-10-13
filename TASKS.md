@@ -72,7 +72,7 @@
   the live profile object (Dexie live query).
   *Done when:* reloading the page keeps the same active profile.
 
-- [ ] **T-12 Profile switcher**
+- [x] **T-12 Profile switcher**
   `ProfileSwitcher.jsx` at the top of the sidebar: dropdown of profiles, "New profile",
   "Rename", "Delete" (with confirm).
   *Done when:* you can create two profiles and switch between them.
