@@ -272,7 +272,7 @@
   As the teacher types, show the parsed lessons ("Thursday 15/10/2026 — O2 (80 min), O3 (80 min)").
   *Done when:* the preview updates live and shows a clear message when not understood.
 
-- [ ] **T-48 Last covered topic boxes**
+- [x] **T-48 Last covered topic boxes**
   For each class in the preview, an editable "Last covered" input pre-filled from `progress`.
   *Done when:* edits save to `progress`.
 

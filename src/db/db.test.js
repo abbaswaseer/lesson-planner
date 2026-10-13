@@ -10,6 +10,8 @@ import {
   addSource,
   deleteSource,
   listSources,
+  getLastTopics,
+  setLastTopic,
 } from './db.js';
 
 beforeEach(async () => {
@@ -90,5 +92,18 @@ describe('source helpers', () => {
     expect(await db.sources.get(bookId)).toBeUndefined();
     expect(await db.pages.where('sourceId').equals(bookId).count()).toBe(0);
     expect(await db.pages.where('sourceId').equals(sowId).count()).toBe(1);
+  });
+});
+
+describe('progress helpers', () => {
+  it('keeps one last topic per class per profile', async () => {
+    const a = await createProfile({ name: 'A' });
+    const b = await createProfile({ name: 'B' });
+    await setLastTopic(a, 'O3', '2.1 Types of transmission');
+    await setLastTopic(a, 'O3', '2.2 Methods of error detection');
+    await setLastTopic(a, 'O1', '1.3.1 Storage units');
+    await setLastTopic(b, 'O3', 'other profile');
+    expect(await getLastTopics(a)).toEqual({ O1: '1.3.1 Storage units', O3: '2.2 Methods of error detection' });
+    expect(await db.progress.count()).toBe(3);
   });
 });

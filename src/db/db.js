@@ -117,4 +117,29 @@ export async function listSources(profileId) {
   return sources.reverse();
 }
 
+// ---------------------------------------------------------------------------
+// Progress helpers: the last topic covered per class
+// ---------------------------------------------------------------------------
+
+/**
+ * Last covered topic for each class of a profile.
+ * @param {number} profileId
+ * @returns {Promise<Record<string, string>>} classLabel → lastTopic
+ */
+export async function getLastTopics(profileId) {
+  const rows = await db.progress.where('profileId').equals(profileId).toArray();
+  return Object.fromEntries(rows.map((row) => [row.classLabel, row.lastTopic ?? '']));
+}
+
+/**
+ * Save the last covered topic of one class.
+ * @param {number} profileId
+ * @param {string} classLabel
+ * @param {string} lastTopic
+ * @returns {Promise<void>}
+ */
+export async function setLastTopic(profileId, classLabel, lastTopic) {
+  await db.progress.put({ profileId, classLabel, lastTopic, updatedAt: Date.now() });
+}
+
 export default db;

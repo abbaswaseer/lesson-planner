@@ -7,6 +7,7 @@ import { setupChecklist } from '../lib/readiness.js';
 import { parseRequest } from '../lib/request.js';
 import { buildLessons } from '../lib/timetable.js';
 import Checklist from './generate/Checklist.jsx';
+import LastCovered from './generate/LastCovered.jsx';
 import LessonPreview from './generate/LessonPreview.jsx';
 import RequestForm from './generate/RequestForm.jsx';
 
@@ -24,6 +25,8 @@ export default function GeneratePage() {
   // Worked out in code on every key press; the AI is only asked on Generate.
   const parsed = useMemo(() => (profile ? parseRequest(form.request, profile) : null), [profile, form.request]);
   const lessons = useMemo(() => (parsed ? buildLessons(profile, parsed) : []), [profile, parsed]);
+  const classLabels = useMemo(() => [...new Set(lessons.map((lesson) => lesson.classLabel))], [lessons]);
+  const [lastTopics, setLastTopics] = useState({});
 
   if (profile === undefined || sourceCount === undefined) return null;
   if (profile === null) {
@@ -52,6 +55,7 @@ export default function GeneratePage() {
           busy={false}
         >
           <LessonPreview profile={profile} text={form.request} parsed={parsed} lessons={lessons} />
+          <LastCovered profileId={profile.id} classLabels={classLabels} onValuesChange={setLastTopics} />
         </RequestForm>
       </Card>
     </div>
