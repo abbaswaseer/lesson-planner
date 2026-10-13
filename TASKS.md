@@ -367,7 +367,7 @@
   and remind to export a backup.
   *Done when:* used storage shows in MB.
 
-- [ ] **T-65 Mobile check**
+- [x] **T-65 Mobile check**
   Check every page at phone width and fix layout problems.
   *Done when:* all pages are usable on a phone.
 

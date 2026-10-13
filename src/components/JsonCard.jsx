@@ -15,7 +15,8 @@ export default function JsonCard({ plan, header, errors = [], provider, model, a
   return (
     <article className={`rounded-lg border bg-white shadow-sm ${errors.length ? 'border-red-300' : 'border-gray-200'}`}>
       <div className="flex flex-wrap items-center gap-2 border-b border-gray-100 px-4 py-3">
-        <div className="min-w-0 flex-1">
+        {/* Full width on phones, so the buttons wrap below the title instead of squeezing it. */}
+        <div className="min-w-0 flex-1 basis-full sm:basis-0">
           <h3 className="text-sm font-semibold text-gray-900">{header}</h3>
           <p className="truncate text-xs text-gray-500">{plan.topic}</p>
         </div>
