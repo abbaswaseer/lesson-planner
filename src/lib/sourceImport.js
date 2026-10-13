@@ -5,6 +5,8 @@ import { imageTranscriptionPrompt } from '../ai/prompts.js';
 import { defaultGeminiModel, listGeminiModels, transcribeImageGemini } from '../ai/providers/gemini.js';
 import { friendlyError, readPdfPages } from './pdf.js';
 
+const DOCX_TYPE = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+
 /**
  * Read and save one uploaded file as a source of the active profile.
  * @param {object} profile The active profile.
@@ -31,7 +33,14 @@ export async function importSource(profile, item, onProgress) {
     const sourceId = await save(profile.id, source, [{ pageNo: 1, text }]);
     return { sourceId, pageCount: 1 };
   }
-  throw friendlyError('This kind of file cannot be saved yet.');
+  if (item.kind === 'docx') {
+    // The Word output fills in this file later (T-59/T-60), so keep the file itself, not its text.
+    onProgress?.('Saving…', 1);
+    const file = new Blob([await item.file.arrayBuffer()], { type: DOCX_TYPE });
+    const sourceId = await save(profile.id, { ...source, file }, []);
+    return { sourceId, pageCount: 0 };
+  }
+  throw friendlyError('This kind of file cannot be used. Use PDF, JPG, PNG or a Word (.docx) template.');
 }
 
 /**

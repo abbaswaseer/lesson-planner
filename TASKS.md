@@ -202,7 +202,7 @@
   text transcription; store it as one page.
   *Done when:* the timetable image becomes readable text in the database.
 
-- [ ] **T-35 Template source**
+- [x] **T-35 Template source**
   For DOCX with type `template`, store the file itself (as a Blob) for the Word output.
   *Done when:* the template is stored and listed.
 

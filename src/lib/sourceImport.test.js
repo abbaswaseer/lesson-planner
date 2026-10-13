@@ -50,3 +50,17 @@ describe('importSource for images', () => {
     expect(await db.sources.count()).toBe(0);
   });
 });
+
+describe('importSource for the Word template', () => {
+  it('stores the file itself, with no pages', async () => {
+    const profileId = await createProfile({ name: 'P' });
+    const file = new File(['PK fake docx'], 'BSS Lesson Plan.docx');
+    const { sourceId, pageCount } = await importSource({ id: profileId }, { file, kind: 'docx', type: 'template' });
+    expect(pageCount).toBe(0);
+    const source = await db.sources.get(sourceId);
+    expect(source).toMatchObject({ profileId, type: 'template', name: 'BSS Lesson Plan.docx', pageCount: 0 });
+    expect(source.file).toBeInstanceOf(Blob);
+    expect(await source.file.text()).toBe('PK fake docx');
+    expect(await db.pages.count()).toBe(0);
+  });
+});
