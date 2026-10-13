@@ -1,8 +1,9 @@
 import Button from '../../components/Button.jsx';
 import CopyButton from '../../components/CopyButton.jsx';
 import JsonCard from '../../components/JsonCard.jsx';
-import { downloadJson } from '../../lib/download.js';
+import { downloadText } from '../../lib/download.js';
 import { planHeader } from '../../lib/planFiles.js';
+import { getOutput } from '../../outputs/index.js';
 import RegenerateButton from './RegenerateButton.jsx';
 
 /**
@@ -12,8 +13,7 @@ import RegenerateButton from './RegenerateButton.jsx';
  */
 export default function Results({ results, onRegenerate, regeneratingKey, running }) {
   if (results.length === 0) return null;
-  const allPlans = () => results.map((result) => result.plan);
-  const week = results[0].lesson.weekNo;
+  const output = () => getOutput('beamsJson').render(results.map((result) => result.plan));
 
   return (
     <section className="space-y-4">
@@ -23,8 +23,15 @@ export default function Results({ results, onRegenerate, regeneratingKey, runnin
         </h2>
         {results.length > 1 && (
           <>
-            <CopyButton text={() => JSON.stringify(allPlans(), null, 2)} label="Copy all" />
-            <Button size="sm" variant="secondary" onClick={() => downloadJson(`plans-week${week}.json`, allPlans())}>
+            <CopyButton text={() => output().all} label="Copy all" />
+            <Button
+              size="sm"
+              variant="secondary"
+              onClick={() => {
+                const { all, allFileName } = output();
+                downloadText(allFileName, all);
+              }}
+            >
               Download all
             </Button>
           </>

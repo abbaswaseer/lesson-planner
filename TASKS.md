@@ -322,7 +322,7 @@
 
 ## Phase 9 — Output types
 
-- [ ] **T-57 Output registry** (`outputs/index.js`)
+- [x] **T-57 Output registry** (`outputs/index.js`)
   Register output modules with the interface from CLAUDE.md Section 10. Move BEAMS JSON
   rendering into `outputs/beamsJson.js`.
   *Done when:* Generate uses the registry; nothing else changes visibly.

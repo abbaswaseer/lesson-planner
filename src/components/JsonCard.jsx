@@ -1,5 +1,6 @@
-import { downloadJson } from '../lib/download.js';
+import { downloadText } from '../lib/download.js';
 import { planFileName } from '../lib/planFiles.js';
+import { planText } from '../outputs/beamsJson.js';
 import Button from './Button.jsx';
 import CopyButton from './CopyButton.jsx';
 
@@ -10,7 +11,7 @@ import CopyButton from './CopyButton.jsx';
  *   actions?: React.ReactNode, busy?: boolean }} props `actions` adds buttons (e.g. Regenerate, Delete).
  */
 export default function JsonCard({ plan, header, errors = [], provider, model, actions, busy = false }) {
-  const json = JSON.stringify([plan], null, 2);
+  const json = planText(plan);
   return (
     <article className={`rounded-lg border bg-white shadow-sm ${errors.length ? 'border-red-300' : 'border-gray-200'}`}>
       <div className="flex flex-wrap items-center gap-2 border-b border-gray-100 px-4 py-3">
@@ -19,7 +20,7 @@ export default function JsonCard({ plan, header, errors = [], provider, model, a
           <p className="truncate text-xs text-gray-500">{plan.topic}</p>
         </div>
         <CopyButton text={json} />
-        <Button size="sm" variant="secondary" onClick={() => downloadJson(planFileName(plan), [plan])}>
+        <Button size="sm" variant="secondary" onClick={() => downloadText(planFileName(plan), json)}>
           Download
         </Button>
         {actions}
