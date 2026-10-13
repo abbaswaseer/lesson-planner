@@ -161,7 +161,7 @@
   `findClass(profile, text)` matches "O3", "o3", "11C", "XI", "Class 11", "class XI".
   *Done when:* tests pass for all these forms.
 
-- [ ] **T-28 Request parser**
+- [x] **T-28 Request parser**
   `parseRequest(text)` → `{ day, classLabel, week }` for: "Monday, week 9",
   "O3, week 9", "11C week 9", "O2, week 9, Thursday", "thursday wk 9".
   Returns `null` if it cannot parse.
