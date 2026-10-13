@@ -157,7 +157,7 @@
   `lessonDuration(profile, entry)` = periods × minutes for that day (with overrides).
   *Done when:* tests pass: Monday O1 = 80, Wednesday O3 = 40, Friday O1 = 60.
 
-- [ ] **T-27 Class name matching**
+- [x] **T-27 Class name matching**
   `findClass(profile, text)` matches "O3", "o3", "11C", "XI", "Class 11", "class XI".
   *Done when:* tests pass for all these forms.
 
