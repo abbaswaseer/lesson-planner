@@ -4,6 +4,7 @@ import Card from '../../components/Card.jsx';
 import { useToast } from '../../components/Toast.jsx';
 import { setActiveProfileId } from '../../db/activeProfile.js';
 import { downloadJson } from '../../lib/download.js';
+import { userMessage } from '../../lib/friendlyError.js';
 import { buildExport, exportFileName, importBackup, readBackupFile } from '../../lib/exportImport.js';
 
 /**
@@ -40,8 +41,7 @@ export default function Backup({ profile }) {
       setActiveProfileId(await importBackup(data));
       toast.success(`Imported "${data.profile.name}".`);
     } catch (error) {
-      // readBackupFile throws plain-English messages; database errors get a generic one.
-      toast.error(error.message?.startsWith('This ') ? error.message : 'Could not import this backup. Please try again.');
+      toast.error(userMessage(error, 'Could not import this backup. Please try again.'));
     } finally {
       setBusy(false);
     }

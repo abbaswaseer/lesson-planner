@@ -354,7 +354,7 @@
   ("limit reached", "key not working", "plan has red errors").
   *Done when:* a new teacher could follow it alone.
 
-- [ ] **T-62 Friendly errors everywhere**
+- [x] **T-62 Friendly errors everywhere**
   Map all typed errors to plain-English messages with next steps.
   *Done when:* no raw error text or stack trace is ever shown.
 

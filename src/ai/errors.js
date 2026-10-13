@@ -14,6 +14,7 @@ export class AiError extends Error {
     this.code = code;
     this.provider = provider;
     this.status = status;
+    this.friendly = true; // safe to show as-is (see lib/friendlyError.js)
   }
 }
 

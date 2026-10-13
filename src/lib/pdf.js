@@ -1,4 +1,5 @@
 // PDF → one text row per page, using pdfjs-dist in the browser.
+import { friendlyError } from './friendlyError.js';
 
 /**
  * Join pdf.js text items into readable text: items on one line get a space only where
@@ -17,13 +18,6 @@ export function textFromItems(items) {
     .replace(/ *\n */g, '\n')
     .replace(/\n{3,}/g, '\n\n')
     .trim();
-}
-
-/** An error whose message is written for the teacher and safe to show. */
-export function friendlyError(message) {
-  const error = new Error(message);
-  error.friendly = true;
-  return error;
 }
 
 // Loaded on first use: pdf.js is large and most visits never read a PDF.

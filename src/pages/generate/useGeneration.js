@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { understandRequest } from '../../ai/understandRequest.js';
 import { savePlan } from '../../db/plans.js';
+import { userMessage } from '../../lib/friendlyError.js';
 import { generateLessonPlan } from '../../lib/generate.js';
 import { runRequest } from '../../lib/runRequest.js';
 import { buildLessons } from '../../lib/timetable.js';
@@ -8,9 +9,7 @@ import { noLessonsMessage } from '../../lib/lessonPreview.js';
 import { weekTopics } from '../../lib/weekTopics.js';
 import { notificationText } from '../../outputs/notification.js';
 
-// AiError messages are written for teachers; anything else gets a general line (no stack traces).
-const friendly = (error) =>
-  error?.name === 'AiError' ? error.message : 'Something went wrong while generating. Please try again.';
+const friendly = (error) => userMessage(error, 'Something went wrong while generating. Please try again.');
 
 /**
  * State and actions for running a request on Generate: results, progress, Cancel and Regenerate.

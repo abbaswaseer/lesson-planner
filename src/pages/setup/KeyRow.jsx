@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Button from '../../components/Button.jsx';
 import { controlClasses } from '../../components/Field.jsx';
+import { friendlyError, userMessage } from '../../lib/friendlyError.js';
 
 /**
  * One AI key: hidden input, Show/Hide, Test, Load models and the model dropdown.
@@ -23,8 +24,7 @@ export default function KeyRow({ provider, keyValue, onKeyChange, model, onModel
       await action();
       setCheck({ state: 'ok', message: '✓ Working' });
     } catch (error) {
-      // AiError messages are written for teachers; anything else gets a generic line.
-      setCheck({ state: 'error', message: error.message || 'Something went wrong. Try again.' });
+      setCheck({ state: 'error', message: userMessage(error, 'Something went wrong. Try again.') });
     }
   };
 
@@ -34,7 +34,7 @@ export default function KeyRow({ provider, keyValue, onKeyChange, model, onModel
     run(async () => {
       const list = await provider.list(key);
       setModels(list);
-      if (list.length === 0) throw new Error(`${provider.name} has no models available for this key.`);
+      if (list.length === 0) throw friendlyError(`${provider.name} has no models available for this key.`);
       // Keep the teacher's choice if it is still offered; otherwise use the default.
       if (!list.includes(model)) onModelChange(provider.pickDefault(list));
     });

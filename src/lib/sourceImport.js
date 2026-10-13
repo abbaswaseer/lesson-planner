@@ -1,9 +1,9 @@
 // Turn an uploaded file into a saved source (and its pages), whatever kind of file it is.
 import { addSource } from '../db/db.js';
-import { AiError } from '../ai/errors.js';
 import { imageTranscriptionPrompt } from '../ai/prompts.js';
 import { defaultGeminiModel, listGeminiModels, transcribeImageGemini } from '../ai/providers/gemini.js';
-import { friendlyError, readPdfPages } from './pdf.js';
+import { friendlyError } from './friendlyError.js';
+import { readPdfPages } from './pdf.js';
 
 const DOCX_TYPE = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
 
@@ -62,8 +62,7 @@ async function transcribeImage(profile, item) {
     });
     return text;
   } catch (error) {
-    if (error.friendly) throw error;
-    if (error instanceof AiError) throw friendlyError(error.message);
+    if (error.friendly) throw error; // includes AiError, whose messages are written for teachers
     throw friendlyError('Could not read this image. Please try again.');
   }
 }

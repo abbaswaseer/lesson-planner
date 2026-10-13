@@ -1,5 +1,6 @@
 // Profile backup file: everything for one profile in a single .json file.
 import { db } from '../db/db.js';
+import { friendlyError } from './friendlyError.js';
 
 const APP = 'lessonPlanner';
 const FORMAT = 1;
@@ -57,7 +58,7 @@ const withoutId = ({ id, ...rest }) => rest;
  */
 export async function buildExport(profileId, { includeKeys = false } = {}) {
   const profile = await db.profiles.get(profileId);
-  if (!profile) throw new Error('This profile no longer exists.');
+  if (!profile) throw friendlyError('This profile no longer exists.');
 
   const byProfile = (table) => table.where('profileId').equals(profileId).toArray();
   const [sources, pages, plans, progress] = await Promise.all([
@@ -114,7 +115,7 @@ export async function readBackupFile(file) {
   try {
     data = JSON.parse(await file.text());
   } catch {
-    throw new Error('This file could not be read. Choose a .json backup made with Export.');
+    throw friendlyError('This file could not be read. Choose a .json backup made with Export.');
   }
   checkBackup(data);
   return data;
@@ -123,10 +124,10 @@ export async function readBackupFile(file) {
 /** Throws a friendly error if the object is not a backup this version understands. */
 function checkBackup(data) {
   if (!data || data.app !== APP || typeof data.profile !== 'object') {
-    throw new Error('This file is not a Lesson Planner backup.');
+    throw friendlyError('This file is not a Lesson Planner backup.');
   }
   if (data.format !== FORMAT) {
-    throw new Error('This backup was made by a different version of the app and cannot be imported.');
+    throw friendlyError('This backup was made by a different version of the app and cannot be imported.');
   }
 }
 

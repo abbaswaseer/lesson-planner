@@ -3,6 +3,7 @@ import { nanoid } from 'nanoid';
 import Card from '../components/Card.jsx';
 import { useToast } from '../components/Toast.jsx';
 import { useActiveProfile } from '../db/activeProfile.js';
+import { userMessage } from '../lib/friendlyError.js';
 import { importSource } from '../lib/sourceImport.js';
 import { fileKind, guessType, sourceTypeLabel } from '../lib/sourceTypes.js';
 import PendingList from './sources/PendingList.jsx';
@@ -47,7 +48,7 @@ export default function SourcesPage() {
       const pagesText = item.kind === 'pdf' ? ` (${pageCount} pages)` : '';
       toast.success(`Saved "${item.file.name}" as ${sourceTypeLabel(item.type)}${pagesText}.`);
     } catch (error) {
-      toast.error(error?.friendly ? error.message : 'Could not save this file. Please try again.');
+      toast.error(userMessage(error, 'Could not save this file. Please try again.'));
     } finally {
       setBusyId(null);
       setProgress(null);
