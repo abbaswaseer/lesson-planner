@@ -77,7 +77,7 @@
   "Rename", "Delete" (with confirm).
   *Done when:* you can create two profiles and switch between them.
 
-- [ ] **T-13 Sample profile**
+- [x] **T-13 Sample profile**
   Add a "Load sample profile" button (Setup page) that creates the example profile
   from CLAUDE.md Section 5.
   *Done when:* clicking it creates and selects the sample profile.
