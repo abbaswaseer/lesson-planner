@@ -1,10 +1,13 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import Card from '../components/Card.jsx';
 import { useActiveProfile } from '../db/activeProfile.js';
 import { db } from '../db/db.js';
 import { setupChecklist } from '../lib/readiness.js';
+import { parseRequest } from '../lib/request.js';
+import { buildLessons } from '../lib/timetable.js';
 import Checklist from './generate/Checklist.jsx';
+import LessonPreview from './generate/LessonPreview.jsx';
 import RequestForm from './generate/RequestForm.jsx';
 
 /**
@@ -17,6 +20,10 @@ export default function GeneratePage() {
     [profile?.id]
   );
   const [form, setForm] = useState({ request: '', notes: '', outputType: 'beamsJson' });
+
+  // Worked out in code on every key press; the AI is only asked on Generate.
+  const parsed = useMemo(() => (profile ? parseRequest(form.request, profile) : null), [profile, form.request]);
+  const lessons = useMemo(() => (parsed ? buildLessons(profile, parsed) : []), [profile, parsed]);
 
   if (profile === undefined || sourceCount === undefined) return null;
   if (profile === null) {
@@ -43,7 +50,9 @@ export default function GeneratePage() {
           onGenerate={() => {}}
           canGenerate={canGenerate}
           busy={false}
-        />
+        >
+          <LessonPreview profile={profile} text={form.request} parsed={parsed} lessons={lessons} />
+        </RequestForm>
       </Card>
     </div>
   );

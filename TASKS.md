@@ -268,7 +268,7 @@
   Generate button. First-time checklist (key, sources, timetable) when anything is missing.
   *Done when:* the form shows; Generate is disabled until requirements are met.
 
-- [ ] **T-47 Lesson preview**
+- [x] **T-47 Lesson preview**
   As the teacher types, show the parsed lessons ("Thursday 15/10/2026 — O2 (80 min), O3 (80 min)").
   *Done when:* the preview updates live and shows a clear message when not understood.
 
