@@ -148,7 +148,7 @@
 
 ## Phase 4 — Core logic (pure functions + tests)
 
-- [ ] **T-25 Week helpers** (`lib/weeks.js`)
+- [x] **T-25 Week helpers** (`lib/weeks.js`)
   `getWeek(profile, number)`, `dateForDay(week, dayId)` → dd/mm/yyyy,
   `dayName(dayId)`, `formatLongDate("12/10/2026")` → "12th October 2026".
   *Done when:* Vitest tests pass, including 1st/2nd/3rd/11th/21st/22nd suffixes.
