@@ -309,12 +309,12 @@
 
 ## Phase 8 — History page
 
-- [ ] **T-55 History list**
+- [x] **T-55 History list**
   Table of saved plans: date, week, class, topic, output type, created time.
   Filters: class, week. Newest first.
   *Done when:* all generated plans appear.
 
-- [ ] **T-56 View, copy, delete**
+- [x] **T-56 View, copy, delete**
   Open a plan in a JsonCard; copy, download, delete (with confirm).
   *Done when:* all actions work.
 
