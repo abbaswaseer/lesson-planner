@@ -9,6 +9,7 @@ import { buildLessons } from '../lib/timetable.js';
 import Checklist from './generate/Checklist.jsx';
 import LastCovered from './generate/LastCovered.jsx';
 import LessonPreview from './generate/LessonPreview.jsx';
+import NotificationCard from './generate/NotificationCard.jsx';
 import RequestForm from './generate/RequestForm.jsx';
 import Results from './generate/Results.jsx';
 import RunProgress from './generate/RunProgress.jsx';
@@ -68,6 +69,7 @@ export default function GeneratePage() {
           {generation.error}
         </p>
       )}
+      <NotificationCard text={generation.notice} />
       <Results
         results={generation.results}
         onRegenerate={generation.regenerate}

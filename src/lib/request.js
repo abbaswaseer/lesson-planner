@@ -19,12 +19,13 @@ const WEEK_PATTERN = /\b(?:week|wk|w)\s*(\d{1,2})\b/i;
 /**
  * Read a request in one of the supported forms:
  * by day ("Monday, week 9"), by class ("O3, week 9", "11C week 9"),
- * or single ("O2, week 9, Thursday"). Short forms like "thursday wk 9" also work.
+ * single ("O2, week 9, Thursday"), or the whole week ("week 9", used for the weekly notification).
+ * Short forms like "thursday wk 9" also work.
  * @param {string} text
  * @param {object} [profile] If given, the class text must match one of its classes,
  *   and `classLabel` is that class's label ("11C" → "O3"). Without it, the class text is returned as typed.
  * @returns {{ day: number | null, classLabel: string | null, week: number } | null}
- *   null if the week, or both the day and the class, cannot be found.
+ *   null if there is no week, or if other words cannot be read.
  */
 export function parseRequest(text, profile) {
   const source = String(text ?? '');
@@ -58,6 +59,5 @@ export function parseRequest(text, profile) {
     classLabel = match.label;
   }
 
-  if (day === null && classLabel === null) return null;
   return { day, classLabel, week };
 }

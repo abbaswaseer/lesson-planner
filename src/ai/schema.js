@@ -88,3 +88,23 @@ export const TOPICS_SCHEMA = {
   },
   required: ['topics'],
 };
+
+/** Schema for choosing a week's topics for several classes in one call (weekly notification). */
+export const WEEK_TOPICS_SCHEMA = {
+  type: 'OBJECT',
+  properties: {
+    classes: {
+      type: 'ARRAY',
+      items: {
+        type: 'OBJECT',
+        properties: {
+          classLabel: { type: 'STRING', description: 'The class label exactly as given.' },
+          topics: TOPICS_SCHEMA.properties.topics,
+        },
+        required: ['classLabel', 'topics'],
+        propertyOrdering: ['classLabel', 'topics'],
+      },
+    },
+  },
+  required: ['classes'],
+};

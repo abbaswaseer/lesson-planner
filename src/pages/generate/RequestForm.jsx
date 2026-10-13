@@ -21,7 +21,7 @@ export default function RequestForm({ value, onChange, onGenerate, canGenerate, 
     >
       <Textarea
         label="What do you need?"
-        hint='For example "Thursday, week 9", "O3, week 9" or "O2, week 9, Thursday".'
+        hint='For example "Thursday, week 9", "O3, week 9", "O2, week 9, Thursday" or "week 9" (for the notification).'
         rows={2}
         value={value.request}
         onChange={(event) => onChange('request', event.target.value)}

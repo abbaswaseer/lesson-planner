@@ -22,7 +22,6 @@ export function checkAiRequest(data, profile) {
     classLabel = findClass(profile, String(data.classLabel))?.label ?? null;
     if (!classLabel) return null;
   }
-  if (day === null && classLabel === null) return null;
   return { day, classLabel, week };
 }
 

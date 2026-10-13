@@ -22,6 +22,11 @@ describe('parseRequest', () => {
     expect(parseRequest('week 9 Wed')).toEqual({ day: 3, classLabel: null, week: 9 });
   });
 
+  it('reads a whole-week request', () => {
+    expect(parseRequest('week 9')).toEqual({ day: null, classLabel: null, week: 9 });
+    expect(parseRequest('Week 9 plans', SAMPLE_PROFILE)).toEqual({ day: null, classLabel: null, week: 9 });
+  });
+
   it('ignores filler words', () => {
     expect(parseRequest('Plans for O3 on Monday, week 9')).toEqual({ day: 1, classLabel: 'O3', week: 9 });
   });
@@ -38,7 +43,6 @@ describe('parseRequest', () => {
 
   it('returns null when it cannot parse', () => {
     expect(parseRequest('Monday')).toBeNull();
-    expect(parseRequest('week 9')).toBeNull();
     expect(parseRequest('next week please')).toBeNull();
     expect(parseRequest('Monday and Tuesday, week 9')).toBeNull();
     expect(parseRequest('week 0, Monday')).toBeNull();

@@ -127,6 +127,37 @@ export function topicPrompt({ subjectName, classLabel, displayName, lessonCount,
 }
 
 /**
+ * Prompts for choosing a whole week's topics for several classes in one call (weekly notification).
+ * @param {{ subjectName?: string, classes: Array<{ classLabel: string, displayName?: string, lessonCount: number,
+ *   lastTopic?: string }>, sowText?: string, notes?: string, from: string, till: string }} input
+ * @returns {{ system: string, user: string }}
+ */
+export function weekTopicsPrompt({ subjectName, classes, sowText, notes, from, till }) {
+  const system = [
+    `You help a ${subjectName || ''} teacher at Beaconhouse School System follow their scheme of work (SOW).`,
+    'For each class, choose the topics for its lessons this week. Topics follow the SOW order, continue straight on',
+    'from the last covered topic, and follow on from each other. Write each topic as a short line:',
+    'syllabus reference and title, a dash, and a few words, e.g. "1.3.2 Calculating File Sizes — image and sound file size calculations".',
+    'Never include tests, CATs or exams. Return JSON only, matching the schema.',
+  ].join('\n');
+  const user = [
+    `Week: ${from} to ${till}`,
+    ...classes.map(
+      (c) =>
+        `Class ${c.classLabel}${c.displayName ? ` (Class ${c.displayName})` : ''}: ${c.lessonCount} lesson${c.lessonCount > 1 ? 's' : ''};` +
+        ` last topic covered: ${c.lastTopic?.trim() || 'not given'}`
+    ),
+    notes?.trim() ? `Teacher's notes: ${notes.trim()}` : '',
+    '',
+    '--- Scheme of work ---',
+    sowText?.trim() || '(No scheme of work uploaded. Choose sensible next topics from the syllabus.)',
+  ]
+    .filter((line, i, all) => line !== '' || all[i - 1] !== '')
+    .join('\n');
+  return { system, user };
+}
+
+/**
  * Prompts for turning a request the code could not read into { day, classLabel, week } (T-45).
  * @param {string} text What the teacher typed.
  * @param {Array<{ label: string, displayName?: string }>} classes

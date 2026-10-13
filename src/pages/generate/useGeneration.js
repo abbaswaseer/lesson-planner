@@ -5,6 +5,8 @@ import { generateLessonPlan } from '../../lib/generate.js';
 import { runRequest } from '../../lib/runRequest.js';
 import { buildLessons } from '../../lib/timetable.js';
 import { noLessonsMessage } from '../../lib/lessonPreview.js';
+import { weekTopics } from '../../lib/weekTopics.js';
+import { notificationText } from '../../outputs/notification.js';
 
 // AiError messages are written for teachers; anything else gets a general line (no stack traces).
 const friendly = (error) =>
@@ -14,7 +16,7 @@ const friendly = (error) =>
  * State and actions for running a request on Generate: results, progress, Cancel and Regenerate.
  * Each finished plan is saved and moves its class's progress on.
  * @param {object} profile
- * @returns {{ results: object[], running: boolean, progress: object | null, error: string, retryNote: string,
+ * @returns {{ results: object[], notice: string, running: boolean, progress: object | null, error: string, retryNote: string,
  *   start: Function, cancel: Function, regenerate: Function, regeneratingKey: string | null }}
  */
 export function useGeneration(profile) {
@@ -24,6 +26,7 @@ export function useGeneration(profile) {
   const [error, setError] = useState('');
   const [retryNote, setRetryNote] = useState('');
   const [regeneratingKey, setRegeneratingKey] = useState(null);
+  const [notice, setNotice] = useState('');
   const controllerRef = useRef(null);
 
   const onRetry = ({ provider, waitMs }) =>
@@ -36,6 +39,7 @@ export function useGeneration(profile) {
     const controller = new AbortController();
     controllerRef.current = controller;
     setResults([]);
+    setNotice('');
     setError('');
     setRetryNote('');
     setRunning(true);
@@ -49,6 +53,13 @@ export function useGeneration(profile) {
       const lessons = understood ? buildLessons(profile, understood) : [];
       if (lessons.length === 0) {
         setError(noLessonsMessage(profile, understood));
+        return;
+      }
+      if (outputType === 'notification') {
+        // Topics only: from saved plans, or one AI call for the rest. No full plans are made.
+        setProgress({ done: 0, total: 1, message: 'Finding the topics for the week…' });
+        const { items } = await weekTopics({ profile, lessons, lastTopics, notes }, { onRetry });
+        setNotice(notificationText(items, profile, lessons[0]));
         return;
       }
       await runRequest({
@@ -109,5 +120,5 @@ export function useGeneration(profile) {
     }
   };
 
-  return { results, running, progress, error, retryNote, start, cancel, regenerate, regeneratingKey };
+  return { results, notice, running, progress, error, retryNote, start, cancel, regenerate, regeneratingKey };
 }

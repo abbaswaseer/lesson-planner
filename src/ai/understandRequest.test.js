@@ -33,11 +33,14 @@ describe('checkAiRequest', () => {
     expect(checkAiRequest({ day: null, classLabel: 'XI', week: '9' }, SAMPLE_PROFILE)).toEqual({ day: null, classLabel: 'O3', week: 9 });
   });
 
+  it('accepts a whole week', () => {
+    expect(checkAiRequest({ day: null, classLabel: null, week: 9 }, SAMPLE_PROFILE)).toEqual({ day: null, classLabel: null, week: 9 });
+  });
+
   it('rejects unknown classes, bad days and missing weeks', () => {
     expect(checkAiRequest({ day: 2, classLabel: 'O7', week: 9 }, SAMPLE_PROFILE)).toBeNull();
     expect(checkAiRequest({ day: 6, classLabel: null, week: 9 }, SAMPLE_PROFILE)).toBeNull();
     expect(checkAiRequest({ day: 2, classLabel: null, week: null }, SAMPLE_PROFILE)).toBeNull();
-    expect(checkAiRequest({ day: null, classLabel: null, week: 9 }, SAMPLE_PROFILE)).toBeNull();
     expect(checkAiRequest(null, SAMPLE_PROFILE)).toBeNull();
   });
 });

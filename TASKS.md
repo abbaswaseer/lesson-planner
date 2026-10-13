@@ -327,7 +327,7 @@
   rendering into `outputs/beamsJson.js`.
   *Done when:* Generate uses the registry; nothing else changes visibly.
 
-- [ ] **T-58 Weekly notification output** (`outputs/notification.js`)
+- [x] **T-58 Weekly notification output** (`outputs/notification.js`)
   Build the weekly message from the week's plans grouped by class display name, using
   the template and long dates. If plans for the week don't exist yet, generate topics only
   (no full plans) with one AI call.
