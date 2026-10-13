@@ -102,7 +102,7 @@
   Input for collaboration IDs (comma-separated → array of strings).
   *Done when:* saved as `["102558"]`.
 
-- [ ] **T-17 Period settings**
+- [x] **T-17 Period settings**
   Default period minutes (number) and per-day overrides (e.g. Friday = 30).
   *Done when:* saved as `periodMinutes` and `dayOverrides` exactly like CLAUDE.md.
 

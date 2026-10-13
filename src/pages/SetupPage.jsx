@@ -6,6 +6,7 @@ import Card from '../components/Card.jsx';
 import { useToast } from '../components/Toast.jsx';
 import BasicDetails from './setup/BasicDetails.jsx';
 import ClassesEditor from './setup/ClassesEditor.jsx';
+import PeriodSettings from './setup/PeriodSettings.jsx';
 
 /**
  * Setup page: the active profile's settings, one card per section. Every card saves itself.
@@ -42,6 +43,7 @@ export default function SetupPage() {
         <>
           <BasicDetails key={`basic-${profile.id}`} profile={profile} />
           <ClassesEditor key={`classes-${profile.id}`} profile={profile} />
+          <PeriodSettings key={`periods-${profile.id}`} profile={profile} />
         </>
       )}
 
