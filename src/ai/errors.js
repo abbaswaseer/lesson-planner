@@ -82,3 +82,21 @@ export async function fetchJson(url, options, providerName) {
     });
   }
 }
+
+/**
+ * Parse a model's JSON reply. Tolerates a ```json fence around it, which some models add.
+ * @param {string} text
+ * @param {string} providerName
+ * @returns {any}
+ * @throws {AiError} BAD_OUTPUT if it is not JSON.
+ */
+export function parseJsonReply(text, providerName) {
+  const trimmed = String(text ?? '').trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '');
+  try {
+    return JSON.parse(trimmed);
+  } catch {
+    throw new AiError('BAD_OUTPUT', `${providerName} sent back an answer that was not valid JSON. Try again.`, {
+      provider: providerName,
+    });
+  }
+}

@@ -1,5 +1,5 @@
-// Gemini provider. Model listing (T-23), image transcription (T-34); the plan call is added in T-39.
-import { AiError, errorFromStatus, fetchJson, networkError } from '../errors.js';
+// Gemini provider: model listing, JSON generation, image transcription.
+import { AiError, errorFromStatus, fetchJson, networkError, parseJsonReply } from '../errors.js';
 
 const NAME = 'Gemini';
 const MODELS_URL = 'https://generativelanguage.googleapis.com/v1beta/models';
@@ -88,4 +88,24 @@ export async function transcribeImageGemini({ key, model, mimeType, base64, prom
     contents: [{ role: 'user', parts: [{ inlineData: { mimeType, data: base64 } }, { text: prompt }] }],
   });
   return text.trim();
+}
+
+/**
+ * Ask Gemini for JSON that follows a schema (CLAUDE.md Section 8: responseMimeType + responseSchema).
+ * @param {{ key: string, model: string, system: string, user: string, schema: object }} request
+ * @returns {Promise<any>} The parsed JSON.
+ * @throws {AiError} RATE_LIMIT, BAD_KEY, SERVER, NETWORK or BAD_OUTPUT.
+ */
+export async function callGemini({ key, model, system, user, schema }) {
+  const text = await generateText({
+    key,
+    model,
+    contents: [{ role: 'user', parts: [{ text: user }] }],
+    config: {
+      systemInstruction: system,
+      responseMimeType: 'application/json',
+      ...(schema ? { responseSchema: schema } : {}),
+    },
+  });
+  return parseJsonReply(text, NAME);
 }
