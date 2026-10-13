@@ -187,7 +187,7 @@
 
 ## Phase 5 — Sources page
 
-- [ ] **T-32 Upload area**
+- [x] **T-32 Upload area**
   Drag-and-drop + "Choose files" button. Accept PDF, JPG, PNG, DOCX (template only).
   Choose the source type from a dropdown before saving.
   *Done when:* files appear in a pending list with their type.
