@@ -106,7 +106,7 @@
   Default period minutes (number) and per-day overrides (e.g. Friday = 30).
   *Done when:* saved as `periodMinutes` and `dayOverrides` exactly like CLAUDE.md.
 
-- [ ] **T-18 Timetable grid**
+- [x] **T-18 Timetable grid**
   Grid: rows Monday–Friday, columns periods 1–8. Each cell is a dropdown of class labels
   (or empty). Save as the `timetable` array (consecutive periods of the same class on the
   same day become one entry, e.g. `periods: [1, 2]`).
