@@ -49,7 +49,7 @@ Browser
 |---|---|
 | Build tool | Vite |
 | UI | React 18 (JavaScript, **no TypeScript**) |
-| Styling | Tailwind CSS |
+| Styling | Tailwind CSS v4 (via `@tailwindcss/vite`; no config file — settings live in `src/index.css`) |
 | Routing | react-router-dom |
 | Storage | dexie, dexie-react-hooks |
 | PDF reading | pdfjs-dist |
@@ -74,7 +74,6 @@ lesson-planner/
 ├─ index.html
 ├─ package.json
 ├─ vite.config.js
-├─ tailwind.config.js
 ├─ public/
 │  └─ _redirects                  # SPA routing for Cloudflare Pages
 └─ src/

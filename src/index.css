@@ -1,1 +1,12 @@
-/* Base styles are added in T-02 (Tailwind). */
+@import "tailwindcss";
+
+/* Base styles: calm, readable defaults for the whole app. */
+@layer base {
+  html {
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  }
+
+  body {
+    @apply bg-white text-gray-800 antialiased;
+  }
+}

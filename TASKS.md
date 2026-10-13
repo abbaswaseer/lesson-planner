@@ -17,7 +17,7 @@
   Add `.gitignore` (node_modules, dist, .env*).
   *Done when:* `npm run dev` shows a blank page with the title "Lesson Planner".
 
-- [ ] **T-02 Add Tailwind CSS**
+- [x] **T-02 Add Tailwind CSS**
   Install and configure Tailwind. Add base styles in `src/index.css`.
   *Done when:* a test heading styled with Tailwind classes shows blue and bold.
 
