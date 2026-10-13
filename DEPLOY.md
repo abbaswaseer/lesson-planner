@@ -1,18 +1,31 @@
 # DEPLOY.md — putting Lesson Planner online (free)
 
-The app is a static website: Cloudflare Pages builds it from GitHub and serves it for free.
-No server, database or environment variables are needed. Each teacher enters their own API key in the app.
+The app is a static website on Cloudflare Pages (free). No server, database or environment
+variables are needed. Each teacher enters their own API key in the app.
 
-## Before you start
+**Live address:** <https://lesson-planner-8v2.pages.dev>
 
-- The code is on GitHub (repository `abbaswaseer/lesson-planner`).
-- You have a free Cloudflare account: <https://dash.cloudflare.com/sign-up>.
-- Nothing secret is in the repository: no API keys, no textbook files (`.gitignore` covers `.env*`, `dist`, `node_modules`).
+The project (`lesson-planner`) was created by **direct upload** with Cloudflare's `wrangler` tool.
+This means the site does **not** update by itself when code is pushed to GitHub: it must be
+uploaded again after changes (see below).
 
-## Check the build on your computer
+## Update the live site
+
+On the computer with the code:
 
 ```
-npm install
+npm run deploy
+```
+
+This builds the app and uploads `dist` to Cloudflare. The first time on a new computer, sign in once:
+
+```
+npx wrangler@4 login
+```
+
+## Check the build before uploading
+
+```
 npm run build
 npm run preview
 ```
@@ -25,23 +38,14 @@ Deep links work on Cloudflare because of `public/_redirects`, which contains:
 /* /index.html 200
 ```
 
-## Create the Cloudflare Pages project (once)
+## If you later want automatic updates from GitHub
 
-1. Open the Cloudflare dashboard → **Workers & Pages** → **Create** → **Pages** → **Connect to Git**.
-2. Allow Cloudflare to read your GitHub account, then choose the `lesson-planner` repository.
-3. Build settings:
-   - Framework preset: **None** (or Vite)
-   - Build command: `npm run build`
-   - Build output directory: `dist`
-   - Environment variables: none
-4. Press **Save and Deploy**. After a minute or two the app is live at `https://<project-name>.pages.dev`.
-
-## Updating the app
-
-Every push to the `main` branch on GitHub rebuilds and redeploys the site automatically.
-Check the **Deployments** tab in Cloudflare if a change does not appear.
+Cloudflare cannot switch a direct-upload project to GitHub. Create a second Pages project in the
+dashboard (**Workers & Pages** → **Create** → **Pages** → **Connect to Git**, choose
+`lesson-planner`, build command `npm run build`, output directory `dist`). It gets a new
+`*.pages.dev` address; share that one instead and delete the old project.
 
 ## Sharing with other teachers
 
-Send them the `*.pages.dev` link and point them to the Help page. Each teacher's data stays in
-their own browser, so nobody can see anyone else's profile, sources or plans.
+Send them the link and point them to the Help page. Each teacher's data stays in their own
+browser, so nobody can see anyone else's profile, sources or plans.

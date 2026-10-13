@@ -387,7 +387,7 @@
   Guide the user to create a GitHub repo and push (no keys or textbook files committed).
   *Done when:* code is on GitHub.
 
-- [ ] **T-69 Cloudflare Pages**
+- [x] **T-69 Cloudflare Pages**
   Guide the user: Cloudflare dashboard → Workers & Pages → Create → Pages → connect repo;
   build command `npm run build`; output `dist`.
   *Done when:* the app is live on a `*.pages.dev` link.
