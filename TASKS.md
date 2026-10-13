@@ -348,7 +348,7 @@
 
 ## Phase 10 — Help, polish, safety
 
-- [ ] **T-61 Help page**
+- [x] **T-61 Help page**
   Step-by-step guide with screenshots placeholders: get a free Gemini key, set up the profile,
   upload sources, generate, copy into BEAMS, export a backup. Plus an FAQ
   ("limit reached", "key not working", "plan has red errors").
