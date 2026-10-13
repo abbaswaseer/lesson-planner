@@ -58,7 +58,7 @@
 
 ## Phase 2 — Database
 
-- [ ] **T-09 Dexie schema**
+- [x] **T-09 Dexie schema**
   In `src/db/db.js`, create the database with the version 1 schema from CLAUDE.md Section 5.
   *Done when:* the browser DevTools → Application → IndexedDB shows `lessonPlanner` with 5 tables.
 
