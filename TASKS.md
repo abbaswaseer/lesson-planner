@@ -88,7 +88,7 @@
 
 ## Phase 3 — Setup page
 
-- [ ] **T-14 Basic details form**
+- [x] **T-14 Basic details form**
   Fields: profile name, teacher name, subject name, subject_id, lp_type, acad_year_id,
   term_id, book reference text. Auto-save (debounced 500ms).
   *Done when:* edits persist after reload.

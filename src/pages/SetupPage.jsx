@@ -1,14 +1,16 @@
 import { useState } from 'react';
-import { setActiveProfileId } from '../db/activeProfile.js';
+import { setActiveProfileId, useActiveProfile } from '../db/activeProfile.js';
 import { createSampleProfile } from '../db/sampleProfile.js';
 import Button from '../components/Button.jsx';
 import Card from '../components/Card.jsx';
 import { useToast } from '../components/Toast.jsx';
+import BasicDetails from './setup/BasicDetails.jsx';
 
 /**
- * Setup page: the teacher's profile settings. Forms are added in T-14 onwards.
+ * Setup page: the active profile's settings, one card per section. Every card saves itself.
  */
 export default function SetupPage() {
+  const profile = useActiveProfile();
   const toast = useToast();
   const [loading, setLoading] = useState(false);
 
@@ -27,6 +29,15 @@ export default function SetupPage() {
   return (
     <div className="max-w-3xl space-y-6">
       <h1 className="text-2xl font-bold text-gray-900">Setup</h1>
+
+      {profile === null && (
+        <p className="text-sm text-gray-600">
+          Create a profile with the switcher in the menu, or load the sample below to get started.
+        </p>
+      )}
+
+      {/* key: remount the forms when switching profile so no values carry over. */}
+      {profile && <BasicDetails key={profile.id} profile={profile} />}
 
       <Card title="Try it with a sample">
         <p className="mb-4 text-sm text-gray-600">
