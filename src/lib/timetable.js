@@ -1,4 +1,7 @@
-// Timetable helpers: grid ↔ saved timetable, lesson durations. Request → lessons comes in T-27 to T-29.
+// Timetable helpers: grid ↔ saved timetable, lesson durations, request → list of lessons.
+
+import { findClass } from './classMatch.js';
+import { dateForDay, dayName, getWeek } from './weeks.js';
 
 /**
  * Saved timetable → grid lookup: grid[day][period] = class label.
@@ -66,4 +69,41 @@ export function periodMinutesForDay(profile, day) {
 export function lessonDuration(profile, entry) {
   const minutes = periodMinutesForDay(profile, entry.day);
   return minutes === null ? null : entry.periods.length * minutes;
+}
+
+/**
+ * Every lesson a parsed request asks for, worked out from the timetable and week table
+ * (CLAUDE.md Section 7, step 2). Ordered by day, then first period.
+ * @param {object} profile
+ * @param {{ day: number | null, classLabel: string | null, week: number }} parsed From parseRequest.
+ * @returns {Array<{ classLabel: string, class: object, dayId: string, dayName: string, date: string,
+ *   weekNo: number, from: string, till: string, duration: number | null, periods: number[] }>}
+ *   Empty if the week is not in the week table or no lesson matches.
+ */
+export function buildLessons(profile, parsed) {
+  const week = getWeek(profile, parsed?.week);
+  if (!week) return [];
+  // parseRequest usually gives the label already; this also accepts "11C" or "XI".
+  const wantedLabel = parsed.classLabel ? findClass(profile, parsed.classLabel)?.label : null;
+  if (parsed.classLabel && !wantedLabel) return [];
+
+  return (profile.timetable ?? [])
+    .filter((entry) => parsed.day == null || entry.day === Number(parsed.day))
+    .filter((entry) => !wantedLabel || entry.classLabel === wantedLabel)
+    .map((entry) => ({ entry, cls: profile.classes?.find((c) => c.label === entry.classLabel) }))
+    // A timetable slot for a class that was since removed cannot be planned (no class_id).
+    .filter(({ cls }) => cls)
+    .sort((a, b) => a.entry.day - b.entry.day || a.entry.periods[0] - b.entry.periods[0])
+    .map(({ entry, cls }) => ({
+      classLabel: entry.classLabel,
+      class: cls,
+      dayId: String(entry.day),
+      dayName: dayName(entry.day),
+      date: dateForDay(week, entry.day),
+      weekNo: week.number,
+      from: week.from,
+      till: week.till,
+      duration: lessonDuration(profile, entry),
+      periods: [...entry.periods],
+    }));
 }

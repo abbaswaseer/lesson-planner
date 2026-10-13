@@ -167,7 +167,7 @@
   Returns `null` if it cannot parse.
   *Done when:* tests pass for all examples.
 
-- [ ] **T-29 Lesson list builder**
+- [x] **T-29 Lesson list builder**
   `buildLessons(profile, parsed)` → array of
   `{ classLabel, class, dayId, dayName, date, weekNo, from, till, duration, periods }`,
   ordered by day then period.
