@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { nanoid } from 'nanoid';
 import Card from '../components/Card.jsx';
+import { NoProfile } from '../components/EmptyState.jsx';
 import { useToast } from '../components/Toast.jsx';
 import { useActiveProfile } from '../db/activeProfile.js';
 import { userMessage } from '../lib/friendlyError.js';
@@ -61,7 +62,7 @@ export default function SourcesPage() {
     <div className="max-w-3xl space-y-6">
       <h1 className="text-2xl font-bold text-gray-900">Sources</h1>
       {profile === null ? (
-        <p className="text-sm text-gray-600">Create a profile on the Setup page first.</p>
+        <NoProfile />
       ) : (
         <>
           <Card title="Add sources">

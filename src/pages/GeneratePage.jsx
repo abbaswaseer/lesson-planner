@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import Card from '../components/Card.jsx';
+import { NoProfile } from '../components/EmptyState.jsx';
 import { useActiveProfile } from '../db/activeProfile.js';
 import { db } from '../db/db.js';
 import { setupChecklist } from '../lib/readiness.js';
@@ -38,7 +39,7 @@ export default function GeneratePage() {
     return (
       <div className="max-w-3xl space-y-6">
         <h1 className="text-2xl font-bold text-gray-900">Generate</h1>
-        <p className="text-sm text-gray-600">Create a profile on the Setup page first.</p>
+        <NoProfile />
       </div>
     );
   }

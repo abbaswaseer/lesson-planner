@@ -358,7 +358,7 @@
   Map all typed errors to plain-English messages with next steps.
   *Done when:* no raw error text or stack trace is ever shown.
 
-- [ ] **T-63 Empty states**
+- [x] **T-63 Empty states**
   Helpful empty states for Sources, Generate and History with a link to the next step.
   *Done when:* a brand-new profile never shows a blank page.
 

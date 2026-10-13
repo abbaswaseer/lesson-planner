@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import Card from '../components/Card.jsx';
+import EmptyState, { NoProfile } from '../components/EmptyState.jsx';
 import Select from '../components/Select.jsx';
 import { useActiveProfile } from '../db/activeProfile.js';
 import { listPlans } from '../db/plans.js';
@@ -26,9 +27,14 @@ export default function HistoryPage() {
   return (
     <div className="max-w-4xl space-y-6">
       <h1 className="text-2xl font-bold text-gray-900">History</h1>
-      {profile === null && <p className="text-sm text-gray-600">Create a profile on the Setup page first.</p>}
+      {profile === null && <NoProfile />}
       {profile && plans.length === 0 && (
-        <p className="text-sm text-gray-600">No plans yet. Plans you generate are saved here automatically.</p>
+        <EmptyState
+          title="No plans yet"
+          text="Every plan you generate is saved here automatically, so you can copy it again later."
+          linkTo="/generate"
+          linkText="Generate your first plan"
+        />
       )}
       {/* Above the table, so it is in view without scrolling past a long history. */}
       {open && <SavedPlan key={open.id} plan={open} onClose={() => setOpenId(null)} />}
