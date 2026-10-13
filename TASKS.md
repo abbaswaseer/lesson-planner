@@ -62,7 +62,7 @@
   In `src/db/db.js`, create the database with the version 1 schema from CLAUDE.md Section 5.
   *Done when:* the browser DevTools → Application → IndexedDB shows `lessonPlanner` with 5 tables.
 
-- [ ] **T-10 Profile helpers**
+- [x] **T-10 Profile helpers**
   Add helpers: `createProfile`, `getProfile`, `updateProfile`, `deleteProfile`
   (also deletes its sources, pages, plans, progress), `listProfiles`.
   *Done when:* unit tests (with fake-indexeddb) pass.
