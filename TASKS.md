@@ -130,7 +130,7 @@
   toggles and the note "Your key is stored only on this computer." Link to aistudio.google.com.
   *Done when:* keys persist and are hidden by default.
 
-- [ ] **T-23 Test key and load models**
+- [x] **T-23 Test key and load models**
   For each key: "Test" button (small request) and "Load models" button that fills a model
   dropdown. Default Gemini model = first whose name contains "flash".
   *Done when:* a valid Gemini key shows "✓ Working" and a model list; an invalid key shows
