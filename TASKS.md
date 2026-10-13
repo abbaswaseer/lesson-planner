@@ -136,7 +136,7 @@
   *Done when:* a valid Gemini key shows "✓ Working" and a model list; an invalid key shows
   a friendly error.
 
-- [ ] **T-24 Export / Import profile**
+- [x] **T-24 Export / Import profile**
   `lib/exportImport.js`: export the whole profile (settings + sources + pages + plans +
   progress) as one `.json` file, **with an option to exclude API keys** (default: exclude).
   Import creates a new profile from that file.

@@ -121,7 +121,7 @@ export default function ProfileSwitcher() {
       <ConfirmDialog
         open={confirmDelete}
         title={`Delete "${active.name}"?`}
-        message="This removes the profile and all its sources, plans and progress from this computer. This cannot be undone."
+        message="This removes the profile and all its sources, plans and progress from this computer. This cannot be undone. To keep a copy, use Export on the Setup page first."
         confirmLabel="Delete profile"
         onCancel={() => setConfirmDelete(false)}
         onConfirm={remove}

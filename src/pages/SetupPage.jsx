@@ -12,6 +12,7 @@ import WeekTable from './setup/WeekTable.jsx';
 import TeachingStyle from './setup/TeachingStyle.jsx';
 import NotificationTemplate from './setup/NotificationTemplate.jsx';
 import ApiKeys from './setup/ApiKeys.jsx';
+import Backup from './setup/Backup.jsx';
 
 /**
  * Setup page: the active profile's settings, one card per section. Every card saves itself.
@@ -39,7 +40,8 @@ export default function SetupPage() {
 
       {profile === null && (
         <p className="text-sm text-gray-600">
-          Create a profile with the switcher in the menu, or load the sample below to get started.
+          Create a profile with the switcher in the menu, import a backup, or load the sample below
+          to get started.
         </p>
       )}
 
@@ -57,6 +59,9 @@ export default function SetupPage() {
           <NotificationTemplate key={`notification-${profile.id}`} profile={profile} />
         </>
       )}
+
+      {/* Shown even with no profile, so a backup can be imported on a fresh computer. */}
+      {profile !== undefined && <Backup profile={profile} />}
 
       <Card title="Try it with a sample">
         <p className="mb-4 text-sm text-gray-600">
