@@ -45,7 +45,7 @@
   Default route → Generate. Highlight the active link.
   *Done when:* clicking each link changes the page and URL.
 
-- [ ] **T-07 Toast notifications**
+- [x] **T-07 Toast notifications**
   Create `Toast.jsx` and a tiny `useToast` hook (success / error / info, auto-hide 3s).
   *Done when:* a test button on Help shows each toast type.
 
