@@ -5,6 +5,7 @@ import App from './App.jsx';
 import ErrorBoundary from './components/ErrorBoundary.jsx';
 import { ToastProvider } from './components/Toast.jsx';
 import { db } from './db/db.js';
+import { requestPersistentStorage } from './lib/storage.js';
 import './index.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -13,6 +14,8 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 // gets a clear message instead of failing on the first save.
 db.open()
   .then(() => {
+    // Ask the browser not to clear the teacher's data when the disk is nearly full.
+    requestPersistentStorage();
     root.render(
       <React.StrictMode>
         <BrowserRouter>

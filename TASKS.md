@@ -362,7 +362,7 @@
   Helpful empty states for Sources, Generate and History with a link to the next step.
   *Done when:* a brand-new profile never shows a blank page.
 
-- [ ] **T-64 Storage check**
+- [x] **T-64 Storage check**
   Request persistent storage (`navigator.storage.persist()`), show used space on Setup,
   and remind to export a backup.
   *Done when:* used storage shows in MB.

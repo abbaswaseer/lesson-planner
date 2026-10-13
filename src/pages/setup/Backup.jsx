@@ -6,6 +6,7 @@ import { setActiveProfileId } from '../../db/activeProfile.js';
 import { downloadJson } from '../../lib/download.js';
 import { userMessage } from '../../lib/friendlyError.js';
 import { buildExport, exportFileName, importBackup, readBackupFile } from '../../lib/exportImport.js';
+import StorageInfo from './StorageInfo.jsx';
 
 /**
  * Setup → Backup: save the whole profile to a file, or bring one back.
@@ -55,6 +56,7 @@ export default function Backup({ profile }) {
       </p>
 
       <div className="space-y-4">
+        <StorageInfo />
         {profile && (
           <div className="space-y-2">
             <label className="flex items-start gap-2 text-sm text-gray-700">
