@@ -98,7 +98,7 @@
   (comma-separated input saved as an array). Add / remove rows.
   *Done when:* classes persist and show correctly after reload.
 
-- [ ] **T-16 Collaboration team**
+- [x] **T-16 Collaboration team**
   Input for collaboration IDs (comma-separated → array of strings).
   *Done when:* saved as `["102558"]`.
 

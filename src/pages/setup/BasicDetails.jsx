@@ -2,14 +2,20 @@ import Card from '../../components/Card.jsx';
 import Input from '../../components/Input.jsx';
 import SaveStatus from '../../components/SaveStatus.jsx';
 import { useProfileForm } from '../../db/useProfileForm.js';
+import { formatIdList, parseIdList } from '../../lib/idList.js';
 
 // Text fields only; IDs are kept as strings because BEAMS expects "97", not 97.
 const FIELDS = ['name', 'teacherName', 'subjectName', 'subject_id', 'lp_type', 'acad_year_id', 'term_id', 'bookRef'];
 
-const pickFields = (profile) => Object.fromEntries(FIELDS.map((key) => [key, profile[key] ?? '']));
+const pickFields = (profile) => ({
+  ...Object.fromEntries(FIELDS.map((key) => [key, profile[key] ?? ''])),
+  // Shown as "102558, 102559"; saved as ["102558", "102559"].
+  collaboration_team: formatIdList(profile.collaboration_team),
+});
 
 /**
- * Setup → Basic details: names, BEAMS IDs and the book reference. Saves automatically.
+ * Setup → Basic details: names, BEAMS IDs, collaboration team and the book reference.
+ * Saves automatically.
  * @param {{ profile: object }} props The active profile.
  */
 export default function BasicDetails({ profile }) {
@@ -47,6 +53,18 @@ export default function BasicDetails({ profile }) {
             <Input label="lp_type" placeholder="1" inputMode="numeric" {...field('lp_type')} />
             <Input label="acad_year_id" placeholder="35" inputMode="numeric" {...field('acad_year_id')} />
             <Input label="term_id" placeholder="1" inputMode="numeric" {...field('term_id')} />
+          </div>
+          <div className="mt-4">
+            <Input
+              label="Collaboration team"
+              placeholder="e.g. 102558"
+              hint="Teacher IDs to share plans with in BEAMS. Separate several with commas."
+              inputMode="numeric"
+              value={draft.collaboration_team}
+              onChange={(event) =>
+                setField('collaboration_team', event.target.value, { saveValue: parseIdList(event.target.value) })
+              }
+            />
           </div>
         </div>
 
