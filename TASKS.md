@@ -210,7 +210,7 @@
   Table: name, type, pages, date added, actions (View text, Delete with confirm).
   *Done when:* deleting a source also deletes its pages.
 
-- [ ] **T-37 Search index** (`lib/search.js`)
+- [x] **T-37 Search index** (`lib/search.js`)
   Build a MiniSearch index over the active profile's pages (fields: text; store: sourceId,
   pageNo). Rebuild when sources change. `searchPages(query, { type, limit })`.
   *Done when:* searching "ASCII" returns the character-sets pages first.
