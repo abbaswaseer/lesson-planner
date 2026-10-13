@@ -40,7 +40,7 @@
   Sources, Generate, History, Help. App name at the top.
   *Done when:* layout shows on desktop; sidebar collapses to a top menu on phones.
 
-- [ ] **T-06 Routing**
+- [x] **T-06 Routing**
   Add react-router routes for the five pages, each showing its page title.
   Default route → Generate. Highlight the active link.
   *Done when:* clicking each link changes the page and URL.

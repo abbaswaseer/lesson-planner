@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import { NavLink } from 'react-router-dom';
 
-// Shared with App routing in T-06, so the menu and routes stay in one order.
+// Menu order. Paths must match the routes in App.jsx.
 export const NAV_LINKS = [
   { to: '/setup', label: 'Setup' },
   { to: '/sources', label: 'Sources' },
@@ -8,6 +9,10 @@ export const NAV_LINKS = [
   { to: '/history', label: 'History' },
   { to: '/help', label: 'Help' },
 ];
+
+const LINK_BASE = 'block rounded-md px-3 py-2 text-sm font-medium';
+const LINK_ACTIVE = 'bg-blue-100 text-blue-700';
+const LINK_IDLE = 'text-gray-700 hover:bg-blue-50 hover:text-blue-700';
 
 /**
  * App navigation. A fixed left sidebar on laptops; on phones it becomes a
@@ -38,12 +43,14 @@ export default function Sidebar() {
         <ul className="space-y-1">
           {NAV_LINKS.map((link) => (
             <li key={link.to}>
-              <a
-                href={link.to}
-                className="block rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-blue-50 hover:text-blue-700"
+              <NavLink
+                to={link.to}
+                // On phones the open menu would cover the page, so close it after a tap.
+                onClick={() => setMenuOpen(false)}
+                className={({ isActive }) => `${LINK_BASE} ${isActive ? LINK_ACTIVE : LINK_IDLE}`}
               >
                 {link.label}
-              </a>
+              </NavLink>
             </li>
           ))}
         </ul>
