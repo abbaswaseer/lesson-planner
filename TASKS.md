@@ -93,7 +93,7 @@
   term_id, book reference text. Auto-save (debounced 500ms).
   *Done when:* edits persist after reload.
 
-- [ ] **T-15 Classes editor**
+- [x] **T-15 Classes editor**
   Table of classes: label (e.g. O1), display name (IX), class_id, section_ids
   (comma-separated input saved as an array). Add / remove rows.
   *Done when:* classes persist and show correctly after reload.

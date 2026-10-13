@@ -5,6 +5,7 @@ import Button from '../components/Button.jsx';
 import Card from '../components/Card.jsx';
 import { useToast } from '../components/Toast.jsx';
 import BasicDetails from './setup/BasicDetails.jsx';
+import ClassesEditor from './setup/ClassesEditor.jsx';
 
 /**
  * Setup page: the active profile's settings, one card per section. Every card saves itself.
@@ -37,7 +38,12 @@ export default function SetupPage() {
       )}
 
       {/* key: remount the forms when switching profile so no values carry over. */}
-      {profile && <BasicDetails key={profile.id} profile={profile} />}
+      {profile && (
+        <>
+          <BasicDetails key={`basic-${profile.id}`} profile={profile} />
+          <ClassesEditor key={`classes-${profile.id}`} profile={profile} />
+        </>
+      )}
 
       <Card title="Try it with a sample">
         <p className="mb-4 text-sm text-gray-600">

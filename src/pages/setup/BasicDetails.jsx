@@ -29,7 +29,7 @@ export default function BasicDetails({ profile }) {
           hint="Shown in the profile switcher, e.g. your name and subject."
           value={draft.name}
           // A profile must always have a name, so a blank one is shown but not saved.
-          onChange={(event) => setField('name', event.target.value, event.target.value.trim() !== '')}
+          onChange={(event) => setField('name', event.target.value, { save: event.target.value.trim() !== '' })}
           error={nameMissing ? 'Profile name cannot be empty.' : undefined}
         />
 
