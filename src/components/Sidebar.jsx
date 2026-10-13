@@ -26,7 +26,7 @@ export default function Sidebar() {
   return (
     <aside className="border-b border-gray-200 bg-gray-50 md:sticky md:top-0 md:h-screen md:w-56 md:shrink-0 md:border-b-0 md:border-r">
       <div className="flex items-center justify-between px-4 py-4 md:block md:px-5 md:py-6">
-        <div>
+        <div className="min-w-0">
           <span className="text-lg font-bold text-blue-600">Lesson Planner</span>
           {/* Placeholder until the profile switcher arrives in T-12. */}
           <p className="mt-1 truncate text-xs text-gray-500">
