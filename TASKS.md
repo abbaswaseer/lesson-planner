@@ -49,7 +49,7 @@
   Create `Toast.jsx` and a tiny `useToast` hook (success / error / info, auto-hide 3s).
   *Done when:* a test button on Help shows each toast type.
 
-- [ ] **T-08 Reusable UI pieces**
+- [x] **T-08 Reusable UI pieces**
   Create `Button`, `Card`, `Input`, `Select`, `Textarea`, `ConfirmDialog` components
   with consistent Tailwind styling.
   *Done when:* Help page temporarily shows each component; remove the demo after.
