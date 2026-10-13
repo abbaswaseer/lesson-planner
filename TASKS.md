@@ -117,7 +117,7 @@
   and "Add next week" (adds +7 days to the last row and the next number).
   *Done when:* adding weeks 10–16 takes a few clicks.
 
-- [ ] **T-20 Activity style and assessment**
+- [x] **T-20 Activity style and assessment**
   Textarea for activity style; editable list of assessment methods.
   *Done when:* both persist.
 
