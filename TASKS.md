@@ -291,15 +291,15 @@
   provider name in grey, red error list if validation failed.
   *Done when:* copying a card pastes valid JSON into the BEAMS extension.
 
-- [ ] **T-52 Copy all / Download all**
+- [x] **T-52 Copy all / Download all**
   Buttons to copy or download all plans of the request.
   *Done when:* both work.
 
-- [ ] **T-53 Regenerate one plan**
+- [x] **T-53 Regenerate one plan**
   "Regenerate" button on each card with an optional short instruction ("make it simpler").
   *Done when:* only that card is replaced.
 
-- [ ] **T-54 Save and progress update**
+- [x] **T-54 Save and progress update**
   Save each plan to `plans`; update `progress.lastTopic` for each class.
   *Done when:* after generating, the "Last covered" boxes show the new topics.
 

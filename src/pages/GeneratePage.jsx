@@ -10,6 +10,9 @@ import Checklist from './generate/Checklist.jsx';
 import LastCovered from './generate/LastCovered.jsx';
 import LessonPreview from './generate/LessonPreview.jsx';
 import RequestForm from './generate/RequestForm.jsx';
+import Results from './generate/Results.jsx';
+import RunProgress from './generate/RunProgress.jsx';
+import { useGeneration } from './generate/useGeneration.js';
 
 /**
  * Generate page: type a request, check the lessons, get the plans.
@@ -27,6 +30,7 @@ export default function GeneratePage() {
   const lessons = useMemo(() => (parsed ? buildLessons(profile, parsed) : []), [profile, parsed]);
   const classLabels = useMemo(() => [...new Set(lessons.map((lesson) => lesson.classLabel))], [lessons]);
   const [lastTopics, setLastTopics] = useState({});
+  const generation = useGeneration(profile);
 
   if (profile === undefined || sourceCount === undefined) return null;
   if (profile === null) {
@@ -50,14 +54,26 @@ export default function GeneratePage() {
         <RequestForm
           value={form}
           onChange={(field, value) => setForm((current) => ({ ...current, [field]: value }))}
-          onGenerate={() => {}}
+          onGenerate={() => generation.start({ ...form, parsed, lastTopics })}
           canGenerate={canGenerate}
-          busy={false}
+          busy={generation.running || generation.regeneratingKey !== null}
         >
           <LessonPreview profile={profile} text={form.request} parsed={parsed} lessons={lessons} />
           <LastCovered profileId={profile.id} classLabels={classLabels} onValuesChange={setLastTopics} />
         </RequestForm>
       </Card>
+      <RunProgress progress={generation.progress} retryNote={generation.retryNote} onCancel={generation.cancel} />
+      {generation.error && (
+        <p className="whitespace-pre-line rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-800" role="alert">
+          {generation.error}
+        </p>
+      )}
+      <Results
+        results={generation.results}
+        onRegenerate={generation.regenerate}
+        regeneratingKey={generation.regeneratingKey}
+        running={generation.running}
+      />
     </div>
   );
 }
