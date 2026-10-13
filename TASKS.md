@@ -173,7 +173,7 @@
   ordered by day then period.
   *Done when:* "Thursday, week 9" returns O2 (80) and O3 (80); "O3, week 9" returns 4 lessons.
 
-- [ ] **T-30 Validator** (`lib/validate.js`)
+- [x] **T-30 Validator** (`lib/validate.js`)
   Implement every rule in CLAUDE.md Section 9. Return an array of plain-English errors.
   *Done when:* tests pass using the example plan (valid) and 8 broken versions (each fails
   with the right message).
