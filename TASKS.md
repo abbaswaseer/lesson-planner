@@ -112,7 +112,7 @@
   same day become one entry, e.g. `periods: [1, 2]`).
   *Done when:* the sample timetable shows correctly in the grid and edits are saved.
 
-- [ ] **T-19 Week table**
+- [x] **T-19 Week table**
   Editable table: week number, from date, till date (dd/mm/yyyy). Add row, delete row,
   and "Add next week" (adds +7 days to the last row and the next number).
   *Done when:* adding weeks 10–16 takes a few clicks.

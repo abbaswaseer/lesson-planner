@@ -8,6 +8,7 @@ import BasicDetails from './setup/BasicDetails.jsx';
 import ClassesEditor from './setup/ClassesEditor.jsx';
 import PeriodSettings from './setup/PeriodSettings.jsx';
 import TimetableGrid from './setup/TimetableGrid.jsx';
+import WeekTable from './setup/WeekTable.jsx';
 
 /**
  * Setup page: the active profile's settings, one card per section. Every card saves itself.
@@ -46,6 +47,7 @@ export default function SetupPage() {
           <ClassesEditor key={`classes-${profile.id}`} profile={profile} />
           <PeriodSettings key={`periods-${profile.id}`} profile={profile} />
           <TimetableGrid key={`timetable-${profile.id}`} profile={profile} />
+          <WeekTable key={`weeks-${profile.id}`} profile={profile} />
         </>
       )}
 
