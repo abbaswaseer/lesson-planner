@@ -27,7 +27,7 @@
   and add `"test": "vitest run"` to package.json.
   *Done when:* `npm run build` and `npm test` both run without errors.
 
-- [ ] **T-04 Folder structure**
+- [x] **T-04 Folder structure**
   Create the folders and empty starter files listed in CLAUDE.md Section 4.
   *Done when:* the tree matches CLAUDE.md; build still passes.
 
