@@ -379,11 +379,11 @@
 
 ## Phase 11 — Deploy
 
-- [ ] **T-67 Cloudflare Pages prep**
+- [x] **T-67 Cloudflare Pages prep**
   Add `public/_redirects` (`/* /index.html 200`). Write `DEPLOY.md` with the steps.
   *Done when:* `npm run build` → `npm run preview` works with deep links (e.g. /history).
 
-- [ ] **T-68 GitHub**
+- [x] **T-68 GitHub**
   Guide the user to create a GitHub repo and push (no keys or textbook files committed).
   *Done when:* code is on GitHub.
 
