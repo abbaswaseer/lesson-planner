@@ -206,7 +206,7 @@
   For DOCX with type `template`, store the file itself (as a Blob) for the Word output.
   *Done when:* the template is stored and listed.
 
-- [ ] **T-36 Sources list**
+- [x] **T-36 Sources list**
   Table: name, type, pages, date added, actions (View text, Delete with confirm).
   *Done when:* deleting a source also deletes its pages.
 

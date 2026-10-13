@@ -6,6 +6,7 @@ import { useActiveProfile } from '../db/activeProfile.js';
 import { importSource } from '../lib/sourceImport.js';
 import { fileKind, guessType, sourceTypeLabel } from '../lib/sourceTypes.js';
 import PendingList from './sources/PendingList.jsx';
+import SourcesList from './sources/SourcesList.jsx';
 import UploadArea from './sources/UploadArea.jsx';
 
 /**
@@ -60,22 +61,27 @@ export default function SourcesPage() {
       {profile === null ? (
         <p className="text-sm text-gray-600">Create a profile on the Setup page first.</p>
       ) : (
-        <Card title="Add sources">
-          <div className="space-y-4">
-            <UploadArea onFiles={addFiles} disabled={busyId !== null} />
-            {pending.length > 0 && (
-              <p className="text-sm text-gray-600">Check the type of each file, then save it.</p>
-            )}
-            <PendingList
-              items={pending}
-              onTypeChange={changeType}
-              onRemove={remove}
-              onSave={save}
-              busyId={busyId}
-              progress={progress}
-            />
-          </div>
-        </Card>
+        <>
+          <Card title="Add sources">
+            <div className="space-y-4">
+              <UploadArea onFiles={addFiles} disabled={busyId !== null} />
+              {pending.length > 0 && (
+                <p className="text-sm text-gray-600">Check the type of each file, then save it.</p>
+              )}
+              <PendingList
+                items={pending}
+                onTypeChange={changeType}
+                onRemove={remove}
+                onSave={save}
+                busyId={busyId}
+                progress={progress}
+              />
+            </div>
+          </Card>
+          <Card title="Your sources">
+            <SourcesList profileId={profile.id} />
+          </Card>
+        </>
       )}
     </div>
   );
