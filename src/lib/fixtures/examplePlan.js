@@ -1,9 +1,9 @@
 // The real, approved plan from CLAUDE.md Section 6. Used by tests as the "known good" plan.
 
-export const EXAMPLE_LESSON = { classLabel: 'O1', dayId: '5', weekNo: 9 };
+export const EXAMPLE_LESSON = { classLabel: 'O1', dayId: '5', sequenceId: '2', weekNo: 9 };
 
 export const EXAMPLE_PLAN = {
-  label: 'O1 Day 5 - Calculating file sizes',
+  label: 'O1 Day 2 - Calculating file sizes',
   class_id: '16',
   section_ids: ['3'],
   subject_id: '97',
@@ -17,7 +17,7 @@ export const EXAMPLE_PLAN = {
   book_ref:
     'Cambridge IGCSE and O Level Computer Science (2nd Ed.), Williams & Watson, Ch 1 Data representation',
   duration: 60,
-  day_id: '5',
+  day_id: '2',
   learning_outcomes_html:
     '<p><em>Knowledge:</em> Students know the formulas: image size = resolution x colour depth, and sound size = sample rate x sample resolution x length of sample.</p><p><em>Skills:</em> Students can calculate image and sound file sizes and convert the answer into KiB or MiB.</p><p><em>Attitudes:</em> Students show working step by step and check their units.</p>',
   term_id: '1',

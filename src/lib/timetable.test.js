@@ -89,6 +89,7 @@ describe('buildLessons', () => {
       classLabel: 'O2',
       class: SAMPLE_PROFILE.classes[1],
       dayId: '4',
+      sequenceId: '2',
       dayName: 'Thursday',
       date: '15/10/2026',
       weekNo: 9,
@@ -102,12 +103,22 @@ describe('buildLessons', () => {
   it('"O3, week 9" gives its 4 lessons in day order', () => {
     const lessons = buildLessons(SAMPLE_PROFILE, { day: null, classLabel: 'O3', week: 9 });
     expect(summary(lessons)).toEqual(['O3 1 80', 'O3 2 80', 'O3 3 40', 'O3 4 80']);
+    expect(lessons.map((l) => l.sequenceId)).toEqual(['1', '2', '3', '4']);
     expect(lessons.map((l) => l.date)).toEqual(['12/10/2026', '13/10/2026', '14/10/2026', '15/10/2026']);
   });
 
   it('a single lesson request gives one lesson', () => {
     const lessons = buildLessons(SAMPLE_PROFILE, { day: 5, classLabel: 'O2', week: 9 });
     expect(summary(lessons)).toEqual(['O2 5 60']);
+    // O2's Friday lesson is its third that week, even though only Friday was asked for.
+    expect(lessons[0].sequenceId).toBe('3');
+  });
+
+  it('numbers lessons per class across the whole week', () => {
+    const monday = buildLessons(SAMPLE_PROFILE, { day: 1, classLabel: null, week: 9 });
+    expect(monday.map((l) => `${l.classLabel}:${l.sequenceId}`)).toEqual(['O1:1', 'O3:1']);
+    const friday = buildLessons(SAMPLE_PROFILE, { day: 5, classLabel: null, week: 9 });
+    expect(friday.map((l) => `${l.classLabel}:${l.sequenceId}`)).toEqual(['O1:2', 'O2:3']);
   });
 
   it('accepts a class name that is not the label', () => {

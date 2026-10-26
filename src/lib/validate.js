@@ -15,7 +15,7 @@ const ID_LIST_FIELDS = ['section_ids', 'collaboration_team'];
 const TEXT_FIELDS = ['label', 'topic', 'book_ref'];
 const STUDENT_TEXT_FIELDS = ['student_activity', 'resources', 'assessment'];
 const HTML_TAG = /<\/?[a-z!][^>]*>/i;
-const SCHOOL_DAYS = ['1', '2', '3', '4', '5'];
+const LESSON_NUMBER = /^[1-9]\d*$/;
 const OUTCOME_LABELS = ['Knowledge:', 'Skills:', 'Attitudes:'];
 
 const isNonEmptyString = (value) => typeof value === 'string' && value.trim() !== '';
@@ -25,7 +25,7 @@ const count = (text, needle) => String(text).split(needle).length - 1;
 /**
  * Check a BEAMS output against every rule in CLAUDE.md Section 9.
  * @param {unknown} output Should be an array of plan objects.
- * @param {{ classLabel?: string, dayId?: string, weekNo?: number }} [lesson]
+ * @param {{ classLabel?: string, sequenceId?: string, weekNo?: number }} [lesson]
  *   The lesson the plans are for; when given, day_id, cycle_id and the label are checked against it.
  * @returns {string[]} Plain-English errors; empty means valid.
  */
@@ -41,7 +41,7 @@ export function validatePlans(output, lesson = {}) {
 /**
  * Check one plan object. See validatePlans.
  * @param {unknown} plan
- * @param {{ classLabel?: string, dayId?: string, weekNo?: number }} [lesson]
+ * @param {{ classLabel?: string, sequenceId?: string, weekNo?: number }} [lesson]
  * @returns {string[]}
  */
 export function validatePlan(plan, lesson = {}) {
@@ -90,8 +90,8 @@ function checkValues(plan) {
   for (const field of ['week_from', 'week_till']) {
     if (field in plan && !parseDate(plan[field])) errors.push(`${field} must be a real date written dd/mm/yyyy.`);
   }
-  if (isNonEmptyString(plan.day_id) && !SCHOOL_DAYS.includes(plan.day_id)) {
-    errors.push('day_id must be "1" (Monday) to "5" (Friday).');
+  if (isNonEmptyString(plan.day_id) && !LESSON_NUMBER.test(plan.day_id)) {
+    errors.push('day_id must be the lesson number for that class that week, as text, like "2".');
   }
   return errors;
 }
@@ -163,14 +163,14 @@ function checkActivities(plan) {
 
 function checkLesson(plan, lesson) {
   const errors = [];
-  if (lesson.dayId != null && 'day_id' in plan && plan.day_id !== String(lesson.dayId)) {
-    errors.push(`day_id must be "${lesson.dayId}" for this lesson.`);
+  if (lesson.sequenceId != null && 'day_id' in plan && plan.day_id !== String(lesson.sequenceId)) {
+    errors.push(`day_id must be "${lesson.sequenceId}" for this lesson.`);
   }
   if (lesson.weekNo != null && 'cycle_id' in plan && plan.cycle_id !== String(lesson.weekNo)) {
     errors.push(`cycle_id must be "${lesson.weekNo}" (the week number).`);
   }
   // A bad day_id is already reported; checking the label against it would only add noise.
-  if (isNonEmptyString(plan.label) && SCHOOL_DAYS.includes(plan.day_id)) {
+  if (isNonEmptyString(plan.label) && isNonEmptyString(plan.day_id) && LESSON_NUMBER.test(plan.day_id)) {
     const classPart = lesson.classLabel ? escapeRegExp(lesson.classLabel) : '\\S+';
     const prefix = new RegExp(`^${classPart} Day ${escapeRegExp(String(plan.day_id))} - \\S`);
     if (!prefix.test(plan.label)) {

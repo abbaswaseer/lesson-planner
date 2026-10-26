@@ -26,7 +26,7 @@ export function bookReference(bookRef, chapterNumber, chapterTitle) {
 export function mergePlan(lesson, profile, aiFields) {
   const ai = aiFields ?? {};
   return {
-    label: `${lesson.classLabel} Day ${lesson.dayId} - ${String(ai.shortTopic ?? '').trim()}`,
+    label: `${lesson.classLabel} Day ${lesson.sequenceId} - ${String(ai.shortTopic ?? '').trim()}`,
     class_id: lesson.class.class_id,
     section_ids: [...(lesson.class.section_ids ?? [])],
     subject_id: profile.subject_id,
@@ -38,7 +38,7 @@ export function mergePlan(lesson, profile, aiFields) {
     attainment_targets_html: ai.attainment_targets_html,
     book_ref: bookReference(profile.bookRef, ai.chapterNumber, ai.chapterTitle),
     duration: lesson.duration,
-    day_id: lesson.dayId,
+    day_id: lesson.sequenceId,
     learning_outcomes_html: ai.learning_outcomes_html,
     term_id: profile.term_id,
     cycle_id: String(lesson.weekNo),

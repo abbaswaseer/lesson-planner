@@ -42,7 +42,7 @@ describe('lessonPageContent', () => {
 
 describe('docxPlan output', () => {
   it('makes a Word file (a zip starting with PK)', async () => {
-    const output = await docxPlan.render([EXAMPLE_PLAN, { ...EXAMPLE_PLAN, label: 'O1 Day 5 - Second' }], SAMPLE_PROFILE);
+    const output = await docxPlan.render([EXAMPLE_PLAN, { ...EXAMPLE_PLAN, label: 'O1 Day 2 - Second' }], SAMPLE_PROFILE);
     expect(output.kind).toBe('file');
     expect(output.fileName).toBe('Lesson plans week 9.docx');
     const bytes = new Uint8Array(await output.blob.arrayBuffer());
@@ -51,6 +51,6 @@ describe('docxPlan output', () => {
   });
 
   it('names a single plan after its label', () => {
-    expect(docxFileName([EXAMPLE_PLAN])).toBe('O1 Day 5 - Calculating file sizes.docx');
+    expect(docxFileName([EXAMPLE_PLAN])).toBe('O1 Day 2 - Calculating file sizes.docx');
   });
 });

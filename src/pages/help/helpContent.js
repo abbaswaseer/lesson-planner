@@ -56,9 +56,11 @@ export const STEPS = [
     title: 'Copy into BEAMS',
     body: [
       'Press Copy on a plan card (or "Copy all" for several).',
-      'Open the BEAMS lesson plan page and use the Chrome extension to paste the JSON.',
-      'Check the form in BEAMS before you submit it.',
+      'If you do not have the extension yet, download beams-lp-filler.zip from the BEAMS guide and install it once. The steps are on that page.',
+      'Open the BEAMS lesson plan page, paste the JSON into the extension, press Fill form, and check the form before you submit it.',
     ],
+    link: '/beams',
+    linkText: 'Open the BEAMS guide',
     screenshot: 'The BEAMS extension with the plan pasted in',
   },
   {

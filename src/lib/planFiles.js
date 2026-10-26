@@ -2,7 +2,7 @@
 import { dayName } from './weeks.js';
 
 /**
- * "O1-day5-week9.json": short, safe on every computer, and sorts sensibly.
+ * "O1-day2-week9.json": short, safe on every computer, and sorts sensibly.
  * @param {{ label?: string, day_id?: string, cycle_id?: string }} plan
  * @returns {string}
  */

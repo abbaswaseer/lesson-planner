@@ -10,6 +10,7 @@ export const NAV_LINKS = [
   { to: '/generate', label: 'Generate' },
   { to: '/history', label: 'History' },
   { to: '/help', label: 'Help' },
+  { to: '/beams', label: 'BEAMS guide' },
 ];
 
 const LINK_BASE = 'block rounded-md px-3 py-2 text-sm font-medium';

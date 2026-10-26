@@ -10,7 +10,11 @@ export default function HelpPage() {
     <div className="max-w-3xl space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Help</h1>
-        <p className="mt-1 text-sm text-gray-600">Follow these steps once. After that, you only need Generate.</p>
+        <p className="mt-1 text-sm text-gray-600">
+          Follow these steps once. After that, you only need Generate. The{' '}
+          <Link to="/beams" className="font-medium text-blue-600 hover:underline">BEAMS guide</Link>{' '}
+          lists the fixed IDs, timetable, weeks and exact JSON the extension expects.
+        </p>
       </div>
 
       <ol className="space-y-6">

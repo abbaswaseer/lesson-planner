@@ -74,10 +74,16 @@ export function lessonDuration(profile, entry) {
 /**
  * Every lesson a parsed request asks for, worked out from the timetable and week table
  * (CLAUDE.md Section 7, step 2). Ordered by day, then first period.
+ *
+ * `dayId` is the weekday (1 = Monday … 5 = Friday) and is used for dates and headers.
+ * `sequenceId` is BEAMS' `day_id`: this class's 1st, 2nd, 3rd … lesson that week, counted
+ * across the whole week even when only one day was requested. O2 Wed/Thu/Fri = "1"/"2"/"3".
+ *
  * @param {object} profile
  * @param {{ day: number | null, classLabel: string | null, week: number }} parsed From parseRequest.
- * @returns {Array<{ classLabel: string, class: object, dayId: string, dayName: string, date: string,
- *   weekNo: number, from: string, till: string, duration: number | null, periods: number[] }>}
+ * @returns {Array<{ classLabel: string, class: object, dayId: string, sequenceId: string,
+ *   dayName: string, date: string, weekNo: number, from: string, till: string,
+ *   duration: number | null, periods: number[] }>}
  *   Empty if the week is not in the week table or no lesson matches.
  */
 export function buildLessons(profile, parsed) {
@@ -87,23 +93,29 @@ export function buildLessons(profile, parsed) {
   const wantedLabel = parsed.classLabel ? findClass(profile, parsed.classLabel)?.label : null;
   if (parsed.classLabel && !wantedLabel) return [];
 
+  const sequenceByClass = {};
   return (profile.timetable ?? [])
-    .filter((entry) => parsed.day == null || entry.day === Number(parsed.day))
-    .filter((entry) => !wantedLabel || entry.classLabel === wantedLabel)
     .map((entry) => ({ entry, cls: profile.classes?.find((c) => c.label === entry.classLabel) }))
     // A timetable slot for a class that was since removed cannot be planned (no class_id).
     .filter(({ cls }) => cls)
     .sort((a, b) => a.entry.day - b.entry.day || a.entry.periods[0] - b.entry.periods[0])
-    .map(({ entry, cls }) => ({
-      classLabel: entry.classLabel,
-      class: cls,
-      dayId: String(entry.day),
-      dayName: dayName(entry.day),
-      date: dateForDay(week, entry.day),
-      weekNo: week.number,
-      from: week.from,
-      till: week.till,
-      duration: lessonDuration(profile, entry),
-      periods: [...entry.periods],
-    }));
+    .map(({ entry, cls }) => {
+      const sequenceId = (sequenceByClass[entry.classLabel] ?? 0) + 1;
+      sequenceByClass[entry.classLabel] = sequenceId;
+      return {
+        classLabel: entry.classLabel,
+        class: cls,
+        dayId: String(entry.day),
+        sequenceId: String(sequenceId),
+        dayName: dayName(entry.day),
+        date: dateForDay(week, entry.day),
+        weekNo: week.number,
+        from: week.from,
+        till: week.till,
+        duration: lessonDuration(profile, entry),
+        periods: [...entry.periods],
+      };
+    })
+    .filter((lesson) => parsed.day == null || lesson.dayId === String(parsed.day))
+    .filter((lesson) => !wantedLabel || lesson.classLabel === wantedLabel);
 }

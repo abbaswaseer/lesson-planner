@@ -31,10 +31,12 @@ describe('mergePlan', () => {
   });
 
   it('takes IDs and timing from code, not from the AI', () => {
-    const plan = mergePlan(FRIDAY_O1, SAMPLE_PROFILE, { ...AI_FIELDS, duration: 999, class_id: '1', day_id: '2' });
+    const plan = mergePlan(FRIDAY_O1, SAMPLE_PROFILE, { ...AI_FIELDS, duration: 999, class_id: '1', day_id: '1' });
     expect(plan.duration).toBe(60);
     expect(plan.class_id).toBe('16');
-    expect(plan.day_id).toBe('5');
+    // Friday is O1's second lesson that week, so BEAMS day_id is "2".
+    expect(plan.day_id).toBe('2');
+    expect(plan.label).toBe('O1 Day 2 - Calculating file sizes');
   });
 
   it('does not share arrays with the profile', () => {

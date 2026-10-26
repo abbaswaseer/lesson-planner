@@ -1,5 +1,6 @@
 // What goes into the Word lesson plan, as plain data (kept apart from the docx layout so it can be tested).
-import { addDays, dayName, formatLongDate } from '../lib/weeks.js';
+import { buildLessons } from '../lib/timetable.js';
+import { formatLongDate } from '../lib/weeks.js';
 
 /**
  * Split simple HTML (<p>, <em>) into paragraphs of text runs.
@@ -26,6 +27,21 @@ export function htmlParagraphs(html) {
 }
 
 /**
+ * The weekday and date of a plan. `plan.day_id` is the class's lesson number that week,
+ * not the weekday, so find that lesson in the timetable again. Returns null if the
+ * profile's timetable or week table has changed since the plan was made.
+ * @param {object} plan
+ * @param {object} profile
+ * @returns {{ dayName: string, date: string } | null}
+ */
+function lessonDate(plan, profile) {
+  const cls = profile.classes?.find((c) => c.class_id === plan.class_id);
+  if (!cls || plan.cycle_id == null || plan.day_id == null) return null;
+  const lessons = buildLessons(profile, { day: null, classLabel: cls.label, week: Number(plan.cycle_id) });
+  return lessons.find((lesson) => lesson.sequenceId === String(plan.day_id)) ?? null;
+}
+
+/**
  * The header rows and activity rows of one lesson's Word page.
  * @param {object} plan A BEAMS plan.
  * @param {object} profile
@@ -33,14 +49,14 @@ export function htmlParagraphs(html) {
  *   activities: Array<{ teacher: string, student: string, time: string, resources: string, assessment: string }> }}
  */
 export function lessonPageContent(plan, profile) {
-  const date = addDays(plan.week_from, Number(plan.day_id) - 1);
+  const lesson = lessonDate(plan, profile);
   const cls = profile.classes?.find((c) => c.class_id === plan.class_id);
   const plain = (text) => [[{ text: String(text ?? ''), italics: false }]];
   const details = [
     { label: 'Name of Teacher', paragraphs: plain(profile.teacherName) },
     { label: 'Subject', paragraphs: plain(profile.subjectName) },
     { label: 'Topic', paragraphs: plain(plan.topic) },
-    { label: 'Date', paragraphs: plain(date ? `${dayName(plan.day_id)} ${formatLongDate(date)}` : '') },
+    { label: 'Date', paragraphs: plain(lesson ? `${lesson.dayName} ${formatLongDate(lesson.date)}` : '') },
     { label: 'Class', paragraphs: plain(cls?.displayName || String(plan.label ?? '').split(' ')[0]) },
     { label: 'Duration', paragraphs: plain(`${plan.duration} minutes`) },
     { label: 'Attainment Target', paragraphs: htmlParagraphs(plan.attainment_targets_html) },

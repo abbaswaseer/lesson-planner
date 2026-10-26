@@ -67,22 +67,24 @@ describe('validatePlans', () => {
     expect(errorsFor(noAttitudes)[0]).toMatch(/^learning_outcomes_html must be exactly three <p>/);
   });
 
-  it('7. needs day_id 1–5 matching the lesson, and cycle_id matching the week', () => {
+  it('7. needs day_id matching the lesson, and cycle_id matching the week', () => {
     expect(errorsFor(broken((p) => (p.cycle_id = '8')))).toEqual(['cycle_id must be "9" (the week number).']);
-    expect(errorsFor(broken((p) => (p.day_id = '6')), {})).toEqual(['day_id must be "1" (Monday) to "5" (Friday).']);
+    expect(errorsFor(broken((p) => (p.day_id = '0')), {})).toEqual([
+      'day_id must be the lesson number for that class that week, as text, like "2".',
+    ]);
     const wrongDay = broken((p) => {
-      p.day_id = '4';
-      p.label = 'O1 Day 4 - Calculating file sizes';
+      p.day_id = '1';
+      p.label = 'O1 Day 1 - Calculating file sizes';
     });
-    expect(errorsFor(wrongDay)).toEqual(['day_id must be "5" for this lesson.']);
+    expect(errorsFor(wrongDay)).toEqual(['day_id must be "2" for this lesson.']);
   });
 
   it('8. needs the label prefix', () => {
     expect(errorsFor(broken((p) => (p.label = 'Calculating file sizes')))).toEqual([
-      'label must start with "O1 Day 5 - " followed by a short topic.',
+      'label must start with "O1 Day 2 - " followed by a short topic.',
     ]);
-    expect(errorsFor(broken((p) => (p.label = 'O2 Day 5 - Calculating file sizes')))).toEqual([
-      'label must start with "O1 Day 5 - " followed by a short topic.',
+    expect(errorsFor(broken((p) => (p.label = 'O2 Day 2 - Calculating file sizes')))).toEqual([
+      'label must start with "O1 Day 2 - " followed by a short topic.',
     ]);
   });
 

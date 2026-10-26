@@ -181,10 +181,15 @@ db.version(1).stores({
 - **Lesson duration** = number of periods × period minutes for that day
   (`dayOverrides[day].periodMinutes` if present, else `periodMinutes`).
   Example: Friday O1 periods [2, 3] → 2 × 30 = **60**; Monday O1 [1, 2] → 2 × 40 = **80**.
-- **day_id** = weekday number: Monday = "1", Tuesday = "2", Wednesday = "3", Thursday = "4", Friday = "5".
+- **sequenceId** = BEAMS `day_id`: the lesson's number for that class in the week — first lesson "1",
+  second "2", and so on in timetable order (Monday first). Counted across the whole week even when
+  only one day is requested. Example: O2 Wednesday "1", Thursday "2", Friday "3"; O1 Monday "1",
+  Friday "2"; O3 Monday "1" … Thursday "4".
+- **dayId** = weekday for dates and headers: Monday = "1", Tuesday = "2", Wednesday = "3",
+  Thursday = "4", Friday = "5". It is never sent to BEAMS.
 - **cycle_id** = the week number as a string.
 - **week_from / week_till** = from the profile's week table.
-- **label** = `"<classLabel> Day <day_id> - <short topic from AI>"`.
+- **label** = `"<classLabel> Day <sequenceId> - <short topic from AI>"`.
 
 ### Source types
 `textbook`, `sow`, `calendar`, `timetable`, `template`, `other`.
@@ -234,7 +239,7 @@ The output is always an **array**, even for one plan. One array per lesson when 
 ```json
 [
   {
-    "label": "O1 Day 5 - Calculating file sizes",
+    "label": "O1 Day 2 - Calculating file sizes",
     "class_id": "16",
     "section_ids": ["3"],
     "subject_id": "97",
@@ -246,7 +251,7 @@ The output is always an **array**, even for one plan. One array per lesson when 
     "attainment_targets_html": "<p>1.3.2 Calculate the file size of an image file and a sound file, using information given</p>",
     "book_ref": "Cambridge IGCSE and O Level Computer Science (2nd Ed.), Williams & Watson, Ch 1 Data representation",
     "duration": 60,
-    "day_id": "5",
+    "day_id": "2",
     "learning_outcomes_html": "<p><em>Knowledge:</em> Students know the formulas: image size = resolution x colour depth, and sound size = sample rate x sample resolution x length of sample.</p><p><em>Skills:</em> Students can calculate image and sound file sizes and convert the answer into KiB or MiB.</p><p><em>Attitudes:</em> Students show working step by step and check their units.</p>",
     "term_id": "1",
     "cycle_id": "9",
@@ -293,7 +298,8 @@ For every request:
    - Single: `O2, week 9, Thursday` → one lesson.
    If code cannot parse it, ask Gemini to convert the request to
    `{ "day": number|null, "classLabel": string|null, "week": number }` and then continue in code.
-2. **Build the lesson list (code)** from timetable + weeks: classLabel, day_id, date, duration.
+2. **Build the lesson list (code)** from timetable + weeks: classLabel, dayId (weekday), sequenceId
+   (BEAMS `day_id`), date, duration.
 3. **Decide the topic (AI-assisted).** Input: SOW text, last covered topic for that class, any teacher notes.
    For several lessons of the same class in one week, topics must follow on from each other in order.
 4. **Retrieve book pages (code).** Search MiniSearch with the topic words, take the top 3–5 pages
@@ -361,7 +367,8 @@ Return a list of human-readable errors (empty list = valid). Check:
 4. 3–4 activities; each has 1–2 student entries; no HTML in activity text.
 5. Sum of `time` === `duration`.
 6. `attainment_targets_html` has ≥ 1 `<p>`; `learning_outcomes_html` has exactly the three `<em>` labels.
-7. `day_id` is "1"–"5" and matches the lesson's day; `cycle_id` matches the week.
+7. `day_id` is the lesson's number for that class that week ("1", "2", …) and matches `sequenceId`;
+   `cycle_id` matches the week.
 8. Label starts with `"<classLabel> Day <day_id> - "`.
 
 Auto-fix only safe things in code (e.g. trimming spaces, number strings → numbers).
